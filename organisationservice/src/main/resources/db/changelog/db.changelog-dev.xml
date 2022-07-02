@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+    <changeSet author="rohit_prajapati" id="#1">
+        <createTable tableName="country_code">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="country_code_pkey"/>
+            </column>
+            <column name="country_name" type="VARCHAR(50)"/>
+            <column name="country_code" type="VARCHAR(5)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="created_by" type="BIGINT" />
+            <column name="last_updated_at" type="DATETIME"/>
+            <column name="last_updated_by" type="BIGINT" />
+            <column name="approved_at" type="DATETIME"/>
+            <column name="approved_by" type="BIGINT" />
+        </createTable>
+        <createTable tableName="phone_number">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="phone_number_pkey"/>
+            </column>
+            <column name="number" type="VARCHAR(15)"/>
+            <column name="country_code" />
+            <column name="created_at" type="DATETIME"/>
+            <column name="created_by" type="BIGINT" />
+            <column name="last_updated_at" type="DATETIME"/>
+            <column name="last_updated_by" type="BIGINT" />
+            <column name="approved_at" type="DATETIME"/>
+            <column name="approved_by" type="BIGINT" />
+        </createTable>
+        <createTable tableName="country_code">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="country_code_pkey"/>
+            </column>
+            <column name="country_name" type="VARCHAR(50)"/>
+            <column name="country_code" type="VARCHAR(5)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="created_by" type="BIGINT" />
+            <column name="last_updated_at" type="DATETIME"/>
+            <column name="last_updated_by" type="BIGINT" />
+            <column name="approved_at" type="DATETIME"/>
+            <column name="approved_by" type="BIGINT" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
