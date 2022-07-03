@@ -14,10 +14,4 @@ public class EmailDto implements Serializable {
     private Long id;
     private ContactDto contact;
     private String emailAddress;
-    private Instant createdAt;
-    private Long createdBy;
-    private Instant lastUpdatedAt;
-    private Long lastUpdatedBy;
-    private Instant approvedAt;
-    private Long approvedBy;
 }

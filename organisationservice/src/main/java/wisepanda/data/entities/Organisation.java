@@ -11,7 +11,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name="ORGANISATION")
 @Entity
 public class Organisation {
@@ -25,30 +24,6 @@ public class Organisation {
     @JoinColumn(name="CONTACT_ID")
     @ToString.Exclude
     private Contact contact;
-
-    @Column(name="CREATED_AT")
-    @NonNull
-    private Instant createdAt;
-
-    @Column(name="CREATED_BY")
-    @NonNull
-    private Long createdBy;
-
-    @Column(name="LAST_UPDATED_AT")
-    @NonNull
-    private Instant lastUpdatedAt;
-
-    @Column(name="LAST_UPDATED_BY")
-    @NonNull
-    private Long lastUpdatedBy;
-
-    @Column(name="APPROVED_AT")
-    @NonNull
-    private Instant approvedAt;
-
-    @Column(name="APPROVED_BY")
-    @NonNull
-    private Long approvedBy;
 
     @Override
     public boolean equals(Object o) {

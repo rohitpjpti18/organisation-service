@@ -17,10 +17,4 @@ public class PhoneNumberDto implements Serializable {
     private String number;
     private PhoneNumberType type;
     private CountryCodeDto countryCode;
-    private Instant createdAt;
-    private Long createdBy;
-    private Instant lastUpdatedAt;
-    private Long lastUpdatedBy;
-    private Instant approvedAt;
-    private Long approvedBy;
 }

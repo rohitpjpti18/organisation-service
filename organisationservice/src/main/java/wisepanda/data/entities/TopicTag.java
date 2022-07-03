@@ -1,25 +1,27 @@
-package wisepanda.data.entities.contact;
+package wisepanda.data.entities;
 
 import lombok.*;
-import wisepanda.data.enums.ContactType;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="CONTACT")
+@Table(name="TOPIC_TAG")
 @Entity
-public class Contact {
+public class TopicTag {
     @Id
     private Long id;
 
-    @Column(name="TYPE")
-    @Enumerated(EnumType.STRING)
-    private ContactType type;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="QUESTION_ID")
+    @ToString.Exclude
+    private Question question;
+
+    @Column(name="TAG_NAME")
+    private String tagName;
 
     @Column(name="IS_APPROVED")
     private Boolean isApproved;
@@ -28,8 +30,8 @@ public class Contact {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Contact contact = (Contact) o;
-        return Objects.equals(id, contact.id);
+        TopicTag topicTag = (TopicTag) o;
+        return Objects.equals(id, topicTag.id);
     }
 
     @Override

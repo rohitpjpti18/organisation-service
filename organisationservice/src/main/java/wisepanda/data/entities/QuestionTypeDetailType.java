@@ -1,8 +1,6 @@
 package wisepanda.data.entities;
 
 import lombok.*;
-import wisepanda.data.entities.contact.Contact;
-import wisepanda.data.enums.AffiliationType;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -13,30 +11,20 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="SCHOOL")
+@Table(name="QUESTION_TYPE_DETAIL_TYPE")
 @Entity
-public class School {
-
+public class QuestionTypeDetailType {
     @Id
     private Long id;
 
-    @Column(name="NAME")
+    @Column(name="QUESTION_DESCRIPTION")
     @NonNull
-    private String name;
-
-    @Column(name="AFFILIATION")
-    @Enumerated(EnumType.STRING)
-    private AffiliationType affiliation;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORG_ID")
-    @ToString.Exclude
-    private Organisation organisation;
+    private String questionDescription;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CONTACT_ID")
+    @JoinColumn(name="QUESTION_ID")
     @ToString.Exclude
-    private Contact contact;
+    private Question question;
 
     @Column(name="IS_APPROVED")
     private Boolean isApproved;
@@ -45,8 +33,8 @@ public class School {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        School school = (School) o;
-        return id == school.id;
+        QuestionTypeDetailType that = (QuestionTypeDetailType) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override

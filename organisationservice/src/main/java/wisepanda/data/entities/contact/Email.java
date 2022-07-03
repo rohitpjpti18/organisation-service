@@ -11,7 +11,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name="EMAIL")
 @Entity
 public class Email {
@@ -27,41 +26,19 @@ public class Email {
     @Column(name="EMAIL_ADDRESS")
     private String emailAddress;
 
-    @Column(name="CREATED_AT")
-    @NonNull
-    private Instant createdAt;
-
-    @Column(name="CREATED_BY")
-    @NonNull
-    private Long createdBy;
-
-    @Column(name="LAST_UPDATED_AT")
-    @NonNull
-    private Instant lastUpdatedAt;
-
-    @Column(name="LAST_UPDATED_BY")
-    @NonNull
-    private Long lastUpdatedBy;
-
-    @Column(name="APPROVED_AT")
-    @NonNull
-    private Instant approvedAt;
-
-    @Column(name="APPROVED_BY")
-    @NonNull
-    private Long approvedBy;
-
+    @Column(name="IS_APPROVED")
+    private Boolean isApproved;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Email email = (Email) o;
-        return id != null && Objects.equals(id, email.id);
+        return Objects.equals(id, email.id);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id);
     }
 }

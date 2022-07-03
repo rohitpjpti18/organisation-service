@@ -26,4 +26,16 @@ public class GeneralDao {
 
     @Autowired
     public SchoolRepository school;
+
+    @Autowired
+    public QuestionRepository question;
+
+    @Autowired
+    public QuestionTypeDetailTypeRepository questionTypeDetailType;
+
+    @Autowired
+    public QuestionTypeMultipleChoiceRepository questionTypeMultipleChoice;
+
+    @Autowired
+    public TopicTagRepository topicTag;
 }

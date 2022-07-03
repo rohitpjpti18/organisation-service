@@ -11,7 +11,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name="PHONE_NUMBER")
 @Entity
 public class PhoneNumber {
@@ -36,40 +35,16 @@ public class PhoneNumber {
     @JoinColumn(name = "COUNTRY_CODE_ID")
     private CountryCode countryCode;
 
-    @Column(name="CREATED_AT")
-    @NonNull
-    private Instant createdAt;
-
-    @Column(name="CREATED_BY")
-    @NonNull
-    private Long createdBy;
-
-    @Column(name="LAST_UPDATED_AT")
-    @NonNull
-    private Instant lastUpdatedAt;
-
-    @Column(name="LAST_UPDATED_BY")
-    @NonNull
-    private Long lastUpdatedBy;
-
-    @Column(name="APPROVED_AT")
-    @NonNull
-    private Instant approvedAt;
-
-    @Column(name="APPROVED_BY")
-    @NonNull
-    private Long approvedBy;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PhoneNumber that = (PhoneNumber) o;
-        return Objects.equals(id, that.id) && number.equals(that.number) && type == that.type && createdAt.equals(that.createdAt) && createdBy.equals(that.createdBy) && lastUpdatedAt.equals(that.lastUpdatedAt) && lastUpdatedBy.equals(that.lastUpdatedBy) && approvedAt.equals(that.approvedAt) && approvedBy.equals(that.approvedBy);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, type, createdAt, createdBy, lastUpdatedAt, lastUpdatedBy, approvedAt, approvedBy);
+        return Objects.hash(id);
     }
 }

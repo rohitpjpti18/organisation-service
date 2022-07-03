@@ -14,10 +14,4 @@ public class OrganisationDto implements Serializable {
     private Long id;
     private String name;
     private ContactDto contact;
-    private Instant createdAt;
-    private Long createdBy;
-    private Instant lastUpdatedAt;
-    private Long lastUpdatedBy;
-    private Instant approvedAt;
-    private Long approvedBy;
 }

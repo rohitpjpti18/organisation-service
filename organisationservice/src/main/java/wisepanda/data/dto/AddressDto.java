@@ -17,10 +17,4 @@ public class AddressDto implements Serializable {
     private Long id;
     private ContactDto contact;
     private AddressType addressType;
-    private Instant createdAt;
-    private Long createdBy;
-    private Instant lastUpdatedAt;
-    private Long lastUpdatedBy;
-    private Instant approvedAt;
-    private Long approvedBy;
 }

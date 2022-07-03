@@ -17,10 +17,4 @@ public class SchoolDto implements Serializable {
     private AffiliationType affiliation;
     private OrganisationDto organisation;
     private ContactDto contact;
-    private Instant createdAt;
-    private Long createdBy;
-    private Instant lastUpdatedAt;
-    private Long lastUpdatedBy;
-    private Instant approvedAt;
-    private Long approvedBy;
 }
