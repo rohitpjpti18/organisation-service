@@ -1,9 +1,8 @@
-package wisepanda.data.entities;
+package wisepanda.data.entities.question;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
@@ -11,45 +10,48 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="QUESTION_TYPE_MULTIPLE_CHOICE")
+@Table(name="question_type_multiple_choice")
 @Entity
 public class QuestionTypeMultipleChoice {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_type_multiple_choice_seq")
+    @SequenceGenerator(name = "question_type_multiple_choice_seq")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name="QUESTION_DESCRIPTION")
+    @Column(name="question_description")
     @NonNull
     private String questionDescription;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="QUESTION_ID")
+    @JoinColumn(name="question_id")
     @ToString.Exclude
     private Question question;
 
-    @Column(name="MULTIPLE_CHOICE")
+    @Column(name="multiple_choice")
     private Boolean multipleChoice;
 
-    @Column(name="OPTION_1")
+    @Column(name="option_1")
     @NonNull
     private String option1;
 
-    @Column(name="OPTION_2")
+    @Column(name="option_2")
     @NonNull
     private String option2;
 
-    @Column(name="OPTION_3")
+    @Column(name="option_3")
     private String option3;
 
-    @Column(name="OPTION_4")
+    @Column(name="option_4")
     private String option4;
 
-    @Column(name="OPTION_5")
+    @Column(name="option_5")
     private String option5;
 
-    @Column(name="OPTION_6")
+    @Column(name="option_6")
     private String option6;
 
-    @Column(name="IS_APPROVED")
+    @Column(name="is_approved")
     private Boolean isApproved;
 
     @Override

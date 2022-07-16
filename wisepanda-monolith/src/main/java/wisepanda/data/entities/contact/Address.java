@@ -24,6 +24,9 @@ public class Address {
     @Column(name="TYPE")
     private AddressType addressType;
 
+    @Column(name="DETAILS")
+    private String detail;
+
     @Column(name="IS_APPROVED")
     private Boolean isApproved;
 

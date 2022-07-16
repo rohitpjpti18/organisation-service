@@ -1,6 +1,7 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
+import wisepanda.data.enums.ActivationMethod;
 import wisepanda.data.enums.PhoneNumberType;
 
 import javax.persistence.*;
@@ -24,7 +25,6 @@ public class PhoneNumber {
     private Contact contact;
 
     @Column(name="NUMBER")
-    @NonNull
     private String number;
 
     @Column(name="TYPE")
@@ -34,6 +34,18 @@ public class PhoneNumber {
     @ManyToOne
     @JoinColumn(name = "COUNTRY_CODE_ID")
     private CountryCode countryCode;
+
+    @Column(name="IS_VERIFIED")
+    private Boolean isVerified;
+
+    @Column(name="IS_ACTIVE")
+    private Boolean isActive;
+
+    @Column(name="ACTIVATED_ON")
+    private Instant instant;
+
+    @Column(name="ACTIVATION_METHOD")
+    private ActivationMethod activationMethod;
 
     @Override
     public boolean equals(Object o) {

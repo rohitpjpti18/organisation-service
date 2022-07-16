@@ -1,10 +1,10 @@
-package wisepanda.data.entities;
+package wisepanda.data.entities.question;
 
 
 import lombok.*;
+import wisepanda.data.entities.Organisation;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 
@@ -12,20 +12,23 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="QUESTION")
+@Table(name="question")
 @Entity
 public class Question {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq")
+    @SequenceGenerator(name = "question_seq")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name="QUESTION_NAME")
+    @Column(name="question_name")
     private String questionName;
 
     @ManyToOne
-    @JoinColumn(name="ORG_ID")
+    @JoinColumn(name="organisation_id")
     private Organisation organisation;
 
-    @Column(name="IS_APPROVED")
+    @Column(name="is_approved")
     private Boolean isApproved;
 
     @Override

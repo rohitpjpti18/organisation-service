@@ -9,4 +9,5 @@ public class ApiConstants {
     // Path Variables
     public static final String PV_ENTITY = "entity";
 
+    public static final String ADD_PHONE_NUMBER = "add/phone-number";
 }

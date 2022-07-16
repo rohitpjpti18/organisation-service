@@ -1,4 +1,4 @@
-package wisepanda.data.entities;
+package wisepanda.data.entities.question;
 
 import lombok.*;
 
@@ -13,17 +13,15 @@ import java.util.Objects;
 @Entity
 public class TopicTag {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topic_tag_seq")
+    @SequenceGenerator(name = "topic_tag_seq")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="QUESTION_ID")
-    @ToString.Exclude
-    private Question question;
-
-    @Column(name="TAG_NAME")
+    @Column(name="tag_name")
     private String tagName;
 
-    @Column(name="IS_APPROVED")
+    @Column(name="is_approved")
     private Boolean isApproved;
 
     @Override

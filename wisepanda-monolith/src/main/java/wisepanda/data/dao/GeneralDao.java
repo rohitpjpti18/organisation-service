@@ -38,4 +38,7 @@ public class GeneralDao {
 
     @Autowired
     public TopicTagRepository topicTag;
+
+    @Autowired
+    public QuestionTagsRepository questionTags;
 }

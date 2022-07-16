@@ -13,32 +13,35 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="SCHOOL")
+@Table(name="school")
 @Entity
 public class School {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_seq")
+    @SequenceGenerator(name = "school_seq")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name="NAME")
+    @Column(name="name")
     @NonNull
     private String name;
 
-    @Column(name="AFFILIATION")
+    @Column(name="affiliation")
     @Enumerated(EnumType.STRING)
     private AffiliationType affiliation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORG_ID")
+    @JoinColumn(name = "org_id")
     @ToString.Exclude
     private Organisation organisation;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CONTACT_ID")
+    @JoinColumn(name="contact_id")
     @ToString.Exclude
     private Contact contact;
 
-    @Column(name="IS_APPROVED")
+    @Column(name="is_approved")
     private Boolean isApproved;
 
     @Override

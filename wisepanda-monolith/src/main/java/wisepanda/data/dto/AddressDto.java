@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import wisepanda.data.entities.contact.Address;
 import wisepanda.data.enums.AddressType;
 
 import java.io.Serializable;
@@ -17,4 +18,12 @@ public class AddressDto implements Serializable {
     private Long id;
     private ContactDto contact;
     private AddressType addressType;
+
+    public void fill(Address a) {
+        if(a != null){
+            a.setId(id);
+            contact.fill(a.getContact());
+            a.setAddressType(addressType);
+        }
+    }
 }

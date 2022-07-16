@@ -1,9 +1,8 @@
-package wisepanda.data.entities;
+package wisepanda.data.entities.question;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
@@ -11,22 +10,25 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="QUESTION_TYPE_DETAIL_TYPE")
+@Table(name="question_type_detail_type")
 @Entity
 public class QuestionTypeDetailType {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_type_detail_type_seq")
+    @SequenceGenerator(name = "question_type_detail_type_seq")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name="QUESTION_DESCRIPTION")
+    @Column(name="question_description")
     @NonNull
     private String questionDescription;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="QUESTION_ID")
+    @JoinColumn(name="question_id")
     @ToString.Exclude
     private Question question;
 
-    @Column(name="IS_APPROVED")
+    @Column(name="is_approved")
     private Boolean isApproved;
 
     @Override

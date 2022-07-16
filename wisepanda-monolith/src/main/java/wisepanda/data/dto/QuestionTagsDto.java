@@ -3,25 +3,23 @@ package wisepanda.data.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import wisepanda.data.entities.question.QuestionTypeDetailType;
+import wisepanda.data.entities.question.QuestionTags;
 
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionTypeDetailTypeDto implements Serializable {
+public class QuestionTagsDto implements Serializable {
     private Long id;
-    private String questionDescription;
     private QuestionDto question;
-    private Boolean isApproved;
+    private TopicTagDto topicTag;
 
-    public void fill(QuestionTypeDetailType q) {
+    public void fill(QuestionTags q){
         if(q != null) {
             q.setId(id);
-            q.setQuestionDescription(questionDescription);
             question.fill(q.getQuestion());
-            q.setIsApproved(isApproved);
+            topicTag.fill(q.getTopicTag());
         }
     }
 }
