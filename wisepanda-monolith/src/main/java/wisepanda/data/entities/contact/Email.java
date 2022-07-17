@@ -17,29 +17,31 @@ import java.util.Objects;
 public class Email {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_email_seq")
+    @SequenceGenerator(name = "s_email_seq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CONTACT_ID")
+    @JoinColumn(name = "contact_id")
     @ToString.Exclude
     private Contact contact;
 
-    @Column(name="EMAIL_ADDRESS")
+    @Column(name="email_address")
     private String emailAddress;
 
-    @Column(name="IS_VERIFIED")
+    @Column(name="is_verified")
     private Boolean isVerified;
 
-    @Column(name="IS_ACTIVE")
+    @Column(name="is_active")
     private Boolean isActive;
 
-    @Column(name="ACTIVATED_ON")
-    private Instant instant;
+    @Column(name="activated_on")
+    private Instant activatedOn;
 
-    @Column(name="ACTIVATION_METHOD")
+    @Column(name="activation_method")
     private ActivationMethod activationMethod;
 
-    @Column(name="IS_APPROVED")
+    @Column(name="is_approved")
     private Boolean isApproved;
 
     @Override

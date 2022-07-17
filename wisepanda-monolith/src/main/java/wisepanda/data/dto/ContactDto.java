@@ -15,11 +15,19 @@ import java.time.Instant;
 public class ContactDto implements Serializable {
     private Long id;
     private ContactType type;
+    private Boolean isApproved = false;
+
+    public ContactDto(Contact contact) {
+        this.id = contact.getId();
+        this.type = contact.getType();
+        this.isApproved = contact.getIsApproved();
+    }
 
     public void fill(Contact contact) {
         if(contact != null){
             contact.setId(id);
             contact.setType(type);
+            contact.setIsApproved(isApproved);
         }
     }
 }
