@@ -1,5 +1,6 @@
 package wisepanda.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,6 @@ import wisepanda.data.entities.contact.Address;
 import wisepanda.data.enums.AddressType;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +18,10 @@ public class AddressDto implements Serializable {
     private Long id;
     @JsonIgnore
     private ContactDto contact;
+    @JsonAlias({"address_type"})
     private AddressType addressType;
     private String detail;
+    @JsonAlias({"is_approved"})
     private Boolean isApproved = false;
 
     public AddressDto(Address a) {

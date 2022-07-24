@@ -1,5 +1,6 @@
 package wisepanda.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class QuestionTagsDto implements Serializable {
     private Long id;
-    private QuestionDto question;
-    private TopicTagDto topicTag;
+    private QuestionDto question = new QuestionDto();
+    @JsonAlias({"topic_tag"})
+    private TopicTagDto topicTag = new TopicTagDto();
 
     public void fill(QuestionTags q){
         if(q != null) {

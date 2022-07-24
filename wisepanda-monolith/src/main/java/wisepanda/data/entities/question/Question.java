@@ -16,8 +16,8 @@ import java.util.Objects;
 @Entity
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq")
-    @SequenceGenerator(name = "question_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_question_seq")
+    @SequenceGenerator(name = "s_question_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 

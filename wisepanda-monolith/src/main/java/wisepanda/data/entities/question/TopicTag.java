@@ -13,8 +13,8 @@ import java.util.Objects;
 @Entity
 public class TopicTag {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topic_tag_seq")
-    @SequenceGenerator(name = "topic_tag_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_topic_tag_seq")
+    @SequenceGenerator(name = "s_topic_tag_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 

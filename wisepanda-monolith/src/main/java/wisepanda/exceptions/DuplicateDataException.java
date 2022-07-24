@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DataNotFoundException extends Exception{
+public class DuplicateDataException extends Exception{
     private String dataCode;
-    public DataNotFoundException(String dataCode) {
+    public DuplicateDataException(String dataCode) {
         super("Data Not found");
         this.dataCode = dataCode;
     }

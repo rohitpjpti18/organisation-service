@@ -3,7 +3,6 @@ package wisepanda.data.entities.contact;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
@@ -21,7 +20,7 @@ public class CountryCode {
     @Column(name = "country_name")
     private String countryName;
 
-    @Column(name = "country_code")
+    @Column(name = "country_code", unique = true)
     private String countryCode;
 
     @Column(name="is_approved")

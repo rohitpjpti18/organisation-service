@@ -1,5 +1,6 @@
 package wisepanda.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,6 @@ import wisepanda.data.entities.contact.Contact;
 import wisepanda.data.enums.ContactType;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +15,7 @@ import java.time.Instant;
 public class ContactDto implements Serializable {
     private Long id;
     private ContactType type;
+    @JsonAlias({"is_approved"})
     private Boolean isApproved = false;
 
     public ContactDto(Contact contact) {

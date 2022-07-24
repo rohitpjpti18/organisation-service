@@ -34,7 +34,7 @@ public class GeneralDao {
     public QuestionTypeDetailTypeRepository questionTypeDetailType;
 
     @Autowired
-    public QuestionTypeMultipleChoiceRepository questionTypeMultipleChoice;
+    public QuestionMultipleChoiceRepository questionTypeMultipleChoice;
 
     @Autowired
     public TopicTagRepository topicTag;

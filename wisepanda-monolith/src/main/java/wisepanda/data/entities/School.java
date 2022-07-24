@@ -5,7 +5,6 @@ import wisepanda.data.entities.contact.Contact;
 import wisepanda.data.enums.AffiliationType;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
@@ -16,10 +15,9 @@ import java.util.Objects;
 @Table(name="school")
 @Entity
 public class School {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_seq")
-    @SequenceGenerator(name = "school_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_school_seq")
+    @SequenceGenerator(name = "s_school_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 

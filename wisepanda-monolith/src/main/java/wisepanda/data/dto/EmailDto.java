@@ -1,5 +1,6 @@
 package wisepanda.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +18,16 @@ public class EmailDto implements Serializable {
     @JsonIgnore
     private Long id;
     @JsonIgnore
-    private ContactDto contact;
+    private ContactDto contact = new ContactDto();
+    @JsonAlias({"email_address"})
     private String emailAddress;
+    @JsonAlias({"is_verified"})
     private Boolean isVerified = false;
+    @JsonAlias({"is_active"})
     private Boolean isActive = false;
+    @JsonAlias({"activated_on"})
     private Instant activatedOn;
+    @JsonAlias({"activation_method"})
     private ActivationMethod activationMethod;
 
     public EmailDto(Email e) {

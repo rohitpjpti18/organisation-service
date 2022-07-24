@@ -7,161 +7,98 @@ import org.springframework.stereotype.Service;
 import wisepanda.common.EntityConstants;
 import wisepanda.data.dao.GeneralDao;
 import wisepanda.data.dto.*;
-import wisepanda.data.entities.*;
 import wisepanda.data.entities.contact.*;
-import wisepanda.data.entities.question.*;
-import wisepanda.data.validators.ContactValidators;
 import wisepanda.exceptions.DataNotFoundException;
-import wisepanda.exceptions.DataNotValidException;
+import wisepanda.exceptions.InValidDataException;
+import wisepanda.exceptions.DuplicateDataException;
+import wisepanda.utils.InputValidator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ContactServiceImpl {
+public class ContactServiceImpl implements ContactService{
     private static final Logger log = LogManager.getLogger(ContactServiceImpl.class);
 
     @Autowired
     private GeneralDao generalDao;
 
+    @Override
+    public CountryCode addCountryCode(CountryCodeDto data) throws InValidDataException {
+        data = InputValidator.validate(data);
 
-    public CountryCode addCountryCode(CountryCodeDto countryDto) throws DataNotValidException, DataNotFoundException {
-
-        if(!ContactValidators.isValidCountryCode(countryDto)){
-            throw new DataNotValidException(ContactValidators.validateCountryCode(countryDto));
-        }
-
-        Optional<CountryCode> o = generalDao.countryCode.findByCountryCode(countryDto.getCountryCode());
-
+        Optional<CountryCode> o = generalDao.countryCode.findByCountryCode(data.getCountryCode());
         if(o.isPresent()) {
             return o.get();
         }else{
             CountryCode c = new CountryCode();
-            countryDto.fill(c);
+            data.fill(c);
             log.info(c);
             return generalDao.countryCode.saveAndFlush(c);
         }
     }
 
-    public Address addNewAddress(AddressDto data) throws DataNotFoundException, DataNotValidException {
+    @Override
+    public Address addNewAddress(AddressDto data) throws DataNotFoundException, InValidDataException {
+        data = InputValidator.validate(data);
+
+
         Address a = new Address();
         a.setContact(this.findContact(data.getContact()));
         data.fill(a);
 
-        Map<String, String> errors = ContactValidators.validateAddress(data);
-        if(!errors.isEmpty()) throw new DataNotValidException(errors);
         return generalDao.address.saveAndFlush(a);
     }
 
-    public Email addEmailAddress(EmailDto data) throws DataNotValidException, DataNotFoundException {
+    @Override
+    public Email addEmailAddress(EmailDto data) throws InValidDataException, DataNotFoundException {
+        data = InputValidator.validate(data);
+
         Email e = new Email();
         e.setContact(this.findContact(data.getContact()));
         data.fill(e);
 
-        Map<String, String> errors = ContactValidators.validateEmailAddress(data);
-        if(!errors.isEmpty()) throw new DataNotValidException(errors);
         return generalDao.email.saveAndFlush(e);
     }
 
-    public PhoneNumber addPhoneNumber(PhoneNumberDto data) throws DataNotFoundException, DataNotValidException {
+    @Override
+    public PhoneNumber addPhoneNumber(PhoneNumberDto data) throws
+            DataNotFoundException,
+            InValidDataException {
+        data = InputValidator.validate(data);
+
         PhoneNumber p = new PhoneNumber();
         p.setContact(findContact(data.getContact()));
         p.setCountryCode(findCountryCode(data.getCountryCode()));
         data.fill(p);
 
-        Map<String, String> errors = ContactValidators.validatePhoneNumber(data);
-        if(!errors.isEmpty()) throw new DataNotValidException(errors);
         return generalDao.phoneNumber.saveAndFlush(p);
     }
 
+    @Override
     public CountryCode findCountryCode(CountryCodeDto data) throws DataNotFoundException {
         Optional<CountryCode> c = generalDao.countryCode.findByCountryCode(data.getCountryCode());
         if(!c.isPresent()) throw new DataNotFoundException(EntityConstants.COUNTRY_CODE_ENTITY);
         return c.get();
     }
 
+    @Override
     public Contact findContact(ContactDto data) throws DataNotFoundException {
         Optional<Contact> c = generalDao.contact.findById(data.getId());
         if(!c.isPresent()) throw new DataNotFoundException(EntityConstants.CONTACT_ENTITY);
         return c.get();
     }
 
-    public Contact addContact(ContactDto data) throws DataNotValidException, DataNotFoundException {
+    @Override
+    public Contact addContact(ContactDto data) throws InValidDataException, DataNotFoundException {
         Contact c = new Contact();
         data.fill(c);
         return generalDao.contact.saveAndFlush(c);
     }
 
-    public Organisation addOrganisation(OrganisationDto data) throws Exception {
-        Organisation o = new Organisation();
-        data.fill(o);
-        return generalDao.organisation.saveAndFlush(o);
-    }
-
-    public School addSchool(SchoolDto data) throws Exception {
-        School s = new School();
-        data.fill(s);
-        return generalDao.school.saveAndFlush(s);
-    }
-
-    public Question addQuestion(QuestionDto data) throws Exception {
-        Question q = new Question();
-        data.fill(q);
-        return generalDao.question.saveAndFlush(q);
-    }
-
-    public TopicTag addTopicTag(TopicTagDto data) throws Exception {
-        TopicTag t = new TopicTag();
-        data.fill(t);
-        return generalDao.topicTag.saveAndFlush(t);
-    }
-
-    public QuestionTags addQuestionTags(QuestionTagsDto data) throws Exception {
-        QuestionTags q = new QuestionTags();
-        data.fill(q);
-        return generalDao.questionTags.saveAndFlush(q);
-    }
-
-    public QuestionTypeDetailType addQuestionTypeDetailType(QuestionTypeDetailTypeDto data) throws Exception {
-        QuestionDto q = data.getQuestion();
-        Question qEntity;
-        if(q.getId() != null && q.getId() != 0) {
-            Optional<Question> o = generalDao.question.findById(q.getId());
-
-            if(o.isPresent()) qEntity = o.get();
-            else qEntity = new Question();
-        } else {
-            qEntity = addQuestion(q);
-        }
-
-        QuestionTypeDetailType qm = new QuestionTypeDetailType();
-        data.fill(qm);
-
-        return generalDao.questionTypeDetailType.saveAndFlush(qm);
-    }
-
-    public QuestionTypeMultipleChoice addQuestionTypeMultipleChoice(QuestionTypeMultipleChoiceDto data) throws Exception {
-        QuestionDto q = data.getQuestion();
-        Question qEntity;
-        if(q.getId() != null && q.getId() != 0) {
-            Optional<Question> o = generalDao.question.findById(q.getId());
-
-            if(o.isPresent()) qEntity = o.get();
-            else qEntity = new Question();
-        } else {
-            qEntity = addQuestion(q);
-        }
-
-        QuestionTypeMultipleChoice qm = new QuestionTypeMultipleChoice();
-        data.fill(qm);
-        qm.setQuestion(qEntity);
-
-        return generalDao.questionTypeMultipleChoice.saveAndFlush(qm);
-    }
-
-    public CompContactDto getContactDetailsById(Long id) throws DataNotFoundException{
+    @Override
+    public CompContactDto findContactDetailsById(Long id) throws DataNotFoundException{
         Optional<Contact> c = generalDao.contact.findById(id);
         if(!c.isPresent()) throw new DataNotFoundException(EntityConstants.CONTACT_ENTITY);
 
@@ -209,5 +146,19 @@ public class ContactServiceImpl {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean isUnique(PhoneNumberDto data) throws DuplicateDataException{
+        PhoneNumber ph = generalDao.phoneNumber.findByNumber(data.getCountryCode().getCountryCode(), data.getNumber());
+        if(ph != null) throw new DuplicateDataException(EntityConstants.PHONE_NUMBER_ENTITY);
+        return true;
+    }
+
+    @Override
+    public boolean isUnique(EmailDto data) throws DuplicateDataException {
+        Email e = generalDao.email.findByEmailId(data.getEmailAddress());
+        if(e != null) throw new DuplicateDataException(EntityConstants.EMAIL_ENTITY);
+        return true;
     }
 }

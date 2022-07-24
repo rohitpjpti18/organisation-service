@@ -1,7 +1,6 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 import wisepanda.data.enums.ActivationMethod;
 
 import javax.persistence.*;
@@ -26,7 +25,7 @@ public class Email {
     @ToString.Exclude
     private Contact contact;
 
-    @Column(name="email_address")
+    @Column(name="email_address", unique = true)
     private String emailAddress;
 
     @Column(name="is_verified")

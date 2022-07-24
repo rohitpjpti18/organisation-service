@@ -1,5 +1,6 @@
 package wisepanda.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompContactDto {
+    @JsonIgnore
     private Long id;
     private ContactType type;
+    @JsonAlias({"phone_numbers"})
     private List<PhoneNumberDto> phoneNumbers;
     private List<EmailDto> emails;
     private List<AddressDto> addresses;

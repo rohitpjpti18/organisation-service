@@ -7,7 +7,6 @@ import wisepanda.data.entities.School;
 import wisepanda.data.enums.AffiliationType;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 @Data
 @AllArgsConstructor

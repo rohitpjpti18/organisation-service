@@ -4,24 +4,26 @@ import lombok.*;
 import wisepanda.data.entities.contact.Contact;
 
 import javax.persistence.*;
-import java.time.Instant;
+
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="ORGANISATION")
+@Table(name="organisation")
 @Entity
 public class Organisation {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_organisation_seq")
+    @SequenceGenerator(name = "s_organisation_seq")
     private Long id;
 
-    @Column(name="NAME")
+    @Column(name="name")
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CONTACT_ID")
+    @JoinColumn(name="contact_id")
     @ToString.Exclude
     private Contact contact;
 

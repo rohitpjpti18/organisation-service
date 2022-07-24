@@ -4,7 +4,6 @@ import lombok.*;
 import wisepanda.data.enums.ContactType;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter

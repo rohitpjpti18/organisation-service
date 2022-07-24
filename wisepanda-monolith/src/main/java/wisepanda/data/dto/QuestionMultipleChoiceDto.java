@@ -3,14 +3,14 @@ package wisepanda.data.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import wisepanda.data.entities.question.QuestionTypeMultipleChoice;
+import wisepanda.data.entities.question.QuestionMultipleChoice;
 
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionTypeMultipleChoiceDto implements Serializable {
+public class QuestionMultipleChoiceDto implements Serializable {
     private Long id;
     private String questionDescription;
     private QuestionDto question;
@@ -23,7 +23,7 @@ public class QuestionTypeMultipleChoiceDto implements Serializable {
     private String option6;
     private Boolean isApproved;
 
-    public void fill(QuestionTypeMultipleChoice q){
+    public void fill(QuestionMultipleChoice q){
         if(q != null) {
             q.setId(id);
             q.setQuestionDescription(questionDescription);

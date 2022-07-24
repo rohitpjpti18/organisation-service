@@ -1,5 +1,6 @@
 package wisepanda.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,6 @@ import wisepanda.data.entities.contact.PhoneNumber;
 import wisepanda.data.enums.ActivationMethod;
 import wisepanda.data.enums.PhoneNumberType;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -19,13 +19,18 @@ public class PhoneNumberDto implements Serializable {
     @JsonIgnore
     private Long id;
     @JsonIgnore
-    private ContactDto contact;
+    private ContactDto contact = new ContactDto();
     private String number;
     private PhoneNumberType type;
-    private CountryCodeDto countryCode;
+    @JsonAlias({"country_code"})
+    private CountryCodeDto countryCode = new CountryCodeDto();
+    @JsonAlias({"is_verified"})
     private Boolean isVerified = false;
+    @JsonAlias({"is_active"})
     private Boolean isActive = false;
+    @JsonAlias({"activated_on"})
     private Instant activatedOn;
+    @JsonAlias({"activation_method"})
     private ActivationMethod activationMethod;
 
 

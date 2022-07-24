@@ -10,12 +10,12 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="question_type_detail_type")
+@Table(name="question_type_multiple_choice")
 @Entity
-public class QuestionTypeDetailType {
+public class QuestionMultipleChoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_type_detail_type_seq")
-    @SequenceGenerator(name = "question_type_detail_type_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_question_type_multiple_choice_seq")
+    @SequenceGenerator(name = "s_question_type_multiple_choice_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -28,6 +28,29 @@ public class QuestionTypeDetailType {
     @ToString.Exclude
     private Question question;
 
+    @Column(name="multiple_choice")
+    private Boolean multipleChoice;
+
+    @Column(name="option_1")
+    @NonNull
+    private String option1;
+
+    @Column(name="option_2")
+    @NonNull
+    private String option2;
+
+    @Column(name="option_3")
+    private String option3;
+
+    @Column(name="option_4")
+    private String option4;
+
+    @Column(name="option_5")
+    private String option5;
+
+    @Column(name="option_6")
+    private String option6;
+
     @Column(name="is_approved")
     private Boolean isApproved;
 
@@ -35,7 +58,7 @@ public class QuestionTypeDetailType {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        QuestionTypeDetailType that = (QuestionTypeDetailType) o;
+        QuestionMultipleChoice that = (QuestionMultipleChoice) o;
         return Objects.equals(id, that.id);
     }
 
