@@ -1,4 +1,4 @@
-package wisepanda.data.dto;
+package wisepanda.data.dto.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

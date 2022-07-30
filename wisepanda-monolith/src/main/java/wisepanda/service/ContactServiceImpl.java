@@ -4,13 +4,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wisepanda.common.EntityConstants;
 import wisepanda.data.dao.GeneralDao;
-import wisepanda.data.dto.*;
+import wisepanda.data.dto.contact.AddressDto;
+import wisepanda.data.dto.contact.CompContactDto;
+import wisepanda.data.dto.contact.ContactDto;
+import wisepanda.data.dto.contact.CountryCodeDto;
+import wisepanda.data.dto.contact.EmailDto;
+import wisepanda.data.dto.contact.PhoneNumberDto;
 import wisepanda.data.entities.contact.*;
-import wisepanda.exceptions.DataNotFoundException;
+import wisepanda.enums.ErrorType;
 import wisepanda.exceptions.InValidDataException;
-import wisepanda.exceptions.DuplicateDataException;
+import wisepanda.exceptions.WiseNoteException;
 import wisepanda.utils.InputValidator;
 
 import java.util.ArrayList;
@@ -40,7 +44,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Address addNewAddress(AddressDto data) throws DataNotFoundException, InValidDataException {
+    public Address addNewAddress(AddressDto data) throws WiseNoteException, InValidDataException {
         data = InputValidator.validate(data);
 
 
@@ -52,7 +56,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Email addEmailAddress(EmailDto data) throws InValidDataException, DataNotFoundException {
+    public Email addEmailAddress(EmailDto data) throws WiseNoteException, InValidDataException {
         data = InputValidator.validate(data);
 
         Email e = new Email();
@@ -63,9 +67,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public PhoneNumber addPhoneNumber(PhoneNumberDto data) throws
-            DataNotFoundException,
-            InValidDataException {
+    public PhoneNumber addPhoneNumber(PhoneNumberDto data) throws WiseNoteException, InValidDataException {
         data = InputValidator.validate(data);
 
         PhoneNumber p = new PhoneNumber();
@@ -77,30 +79,30 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public CountryCode findCountryCode(CountryCodeDto data) throws DataNotFoundException {
+    public CountryCode findCountryCode(CountryCodeDto data) throws WiseNoteException, InValidDataException {
         Optional<CountryCode> c = generalDao.countryCode.findByCountryCode(data.getCountryCode());
-        if(!c.isPresent()) throw new DataNotFoundException(EntityConstants.COUNTRY_CODE_ENTITY);
+        if(!c.isPresent()) throw new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND);
         return c.get();
     }
 
     @Override
-    public Contact findContact(ContactDto data) throws DataNotFoundException {
+    public Contact findContact(ContactDto data) throws WiseNoteException, InValidDataException {
         Optional<Contact> c = generalDao.contact.findById(data.getId());
-        if(!c.isPresent()) throw new DataNotFoundException(EntityConstants.CONTACT_ENTITY);
+        if(!c.isPresent()) throw new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND);
         return c.get();
     }
 
     @Override
-    public Contact addContact(ContactDto data) throws InValidDataException, DataNotFoundException {
+    public Contact addContact(ContactDto data) throws WiseNoteException, InValidDataException {
         Contact c = new Contact();
         data.fill(c);
         return generalDao.contact.saveAndFlush(c);
     }
 
     @Override
-    public CompContactDto findContactDetailsById(Long id) throws DataNotFoundException{
+    public CompContactDto findContactDetailsById(Long id) throws WiseNoteException, InValidDataException {
         Optional<Contact> c = generalDao.contact.findById(id);
-        if(!c.isPresent()) throw new DataNotFoundException(EntityConstants.CONTACT_ENTITY);
+        if(!c.isPresent()) throw new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND);
 
         CompContactDto result = new CompContactDto();
         result.setType(c.get().getType());
@@ -149,16 +151,16 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public boolean isUnique(PhoneNumberDto data) throws DuplicateDataException{
+    public boolean isUnique(PhoneNumberDto data) throws WiseNoteException, InValidDataException {
         PhoneNumber ph = generalDao.phoneNumber.findByNumber(data.getCountryCode().getCountryCode(), data.getNumber());
-        if(ph != null) throw new DuplicateDataException(EntityConstants.PHONE_NUMBER_ENTITY);
+        if(ph != null) throw new WiseNoteException(ErrorType.ERROR_DUPLICATE_DATA);
         return true;
     }
 
     @Override
-    public boolean isUnique(EmailDto data) throws DuplicateDataException {
+    public boolean isUnique(EmailDto data) throws WiseNoteException, InValidDataException {
         Email e = generalDao.email.findByEmailId(data.getEmailAddress());
-        if(e != null) throw new DuplicateDataException(EntityConstants.EMAIL_ENTITY);
+        if(e != null) throw new WiseNoteException(ErrorType.ERROR_DUPLICATE_DATA);
         return true;
     }
 }

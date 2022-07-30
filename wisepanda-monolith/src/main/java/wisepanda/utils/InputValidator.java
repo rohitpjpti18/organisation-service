@@ -1,8 +1,17 @@
 package wisepanda.utils;
 
-import org.springframework.http.HttpStatus;
 import wisepanda.data.dto.*;
-import wisepanda.data.enums.ErrorCode;
+import wisepanda.data.dto.contact.AddressDto;
+import wisepanda.data.dto.contact.ContactDto;
+import wisepanda.data.dto.contact.CountryCodeDto;
+import wisepanda.data.dto.contact.EmailDto;
+import wisepanda.data.dto.contact.PhoneNumberDto;
+import wisepanda.data.dto.question.QuestionDetailTypeDto;
+import wisepanda.data.dto.question.QuestionDto;
+import wisepanda.data.dto.question.QuestionMultipleChoiceDto;
+import wisepanda.data.dto.question.QuestionTagsDto;
+import wisepanda.data.dto.question.TopicTagDto;
+import wisepanda.enums.ErrorType;
 import wisepanda.exceptions.InValidDataException;
 import wisepanda.exceptions.WiseNoteException;
 
@@ -41,18 +50,19 @@ public class InputValidator {
 
     public static TopicTagDto validate(TopicTagDto data) throws WiseNoteException {
         if(data == null) {
-            WiseNoteException err = new WiseNoteException();
-            err.setErrorCode(ErrorCode.ERR_INPUT_INVALID);
-            err.setStatusCode(HttpStatus.BAD_REQUEST);
-            err.setErrorMsg("TopicTagDto is null");
-            throw new WiseNoteException();
+            WiseNoteException err = new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+            throw err;
         }
 
         return data;
     }
 
-    public static QuestionTagsDto validate(QuestionTagsDto data) throws InValidDataException {
-        return null;
+    public static QuestionTagsDto validate(QuestionTagsDto data) throws WiseNoteException {
+        if(data == null) {
+            WiseNoteException err = new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+            throw err;
+        }
+        return data;
     }
 
     public static QuestionDetailTypeDto validate(QuestionDetailTypeDto data) throws InValidDataException {

@@ -1,10 +1,11 @@
-package wisepanda.data.dto;
+package wisepanda.data.dto.question;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import wisepanda.data.dto.OrganisationDto;
 import wisepanda.data.entities.question.Question;
 
 import java.io.Serializable;
@@ -13,7 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionDto implements Serializable {
-    @JsonIgnore
     private Long id = 0l;
     @JsonAlias({"question_name"})
     private String questionName;

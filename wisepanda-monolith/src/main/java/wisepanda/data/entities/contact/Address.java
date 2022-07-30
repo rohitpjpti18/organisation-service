@@ -1,7 +1,7 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
-import wisepanda.data.enums.AddressType;
+import wisepanda.enums.AddressType;
 
 import javax.persistence.*;
 import java.util.Objects;

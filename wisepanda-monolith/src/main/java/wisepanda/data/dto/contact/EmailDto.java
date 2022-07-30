@@ -1,4 +1,4 @@
-package wisepanda.data.dto;
+package wisepanda.data.dto.contact;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import wisepanda.data.entities.contact.Email;
-import wisepanda.data.enums.ActivationMethod;
+import wisepanda.enums.ActivationMethod;
 
 import java.io.Serializable;
 import java.time.Instant;

@@ -1,7 +1,7 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
-import wisepanda.data.enums.ActivationMethod;
+import wisepanda.enums.ActivationMethod;
 
 import javax.persistence.*;
 import java.time.Instant;

@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.*;
 
 import wisepanda.common.ApiConstants;
 import wisepanda.data.dto.*;
+import wisepanda.data.dto.contact.AddressDto;
+import wisepanda.data.dto.contact.CompContactDto;
+import wisepanda.data.dto.contact.ContactDto;
+import wisepanda.data.dto.contact.CountryCodeDto;
+import wisepanda.data.dto.contact.EmailDto;
+import wisepanda.data.dto.contact.PhoneNumberDto;
 import wisepanda.data.entities.contact.*;
-import wisepanda.exceptions.DataNotFoundException;
 import wisepanda.exceptions.InValidDataException;
-import wisepanda.exceptions.DuplicateDataException;
+import wisepanda.exceptions.WiseNoteException;
 import wisepanda.service.ContactService;
 
 import java.util.ArrayList;
@@ -26,10 +31,7 @@ public class ContactRestApi {
     private ContactService contactService;
 
     @PostMapping(value=ApiConstants.REST_URL_CONTACT)
-    public ResponseEntity addContact(@RequestBody CompContactDto compContact) throws
-            InValidDataException,
-            DataNotFoundException,
-            DuplicateDataException {
+    public ResponseEntity<Object> addContact(@RequestBody CompContactDto compContact) throws WiseNoteException, InValidDataException {
         ContactDto c = new ContactDto();
         c.setType(compContact.getType());
         Contact contact = contactService.addContact(c);
@@ -57,36 +59,36 @@ public class ContactRestApi {
             saveddto.getEmails().add(new EmailDto(contactService.addEmailAddress(e)));
         }
 
-        return new ResponseEntity(saveddto, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(saveddto, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value=ApiConstants.REST_URL_COUNTRY_CODE)
-    public ResponseEntity addCountry(@RequestBody CountryCodeDto countryCodeDto) throws InValidDataException, Exception {
+    public ResponseEntity<Object> addCountry(@RequestBody CountryCodeDto countryCodeDto) throws WiseNoteException, InValidDataException {
         CountryCode c = contactService.addCountryCode(countryCodeDto);
-        return new ResponseEntity(new CountryCodeDto(c), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new CountryCodeDto(c), HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value=ApiConstants.REST_URL_PHONE_NUMBER)
-    public ResponseEntity addPhoneNumber(@RequestBody PhoneNumberDto phoneNumber) throws InValidDataException, Exception {
+    public ResponseEntity<Object> addPhoneNumber(@RequestBody PhoneNumberDto phoneNumber) throws WiseNoteException {
         PhoneNumber ph = contactService.addPhoneNumber(phoneNumber);
-        return new ResponseEntity(new PhoneNumberDto(ph), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new PhoneNumberDto(ph), HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value=ApiConstants.REST_URL_EMAIL)
-    public ResponseEntity addEmail(@RequestBody EmailDto email) throws InValidDataException, Exception {
+    public ResponseEntity<Object> addEmail(@RequestBody EmailDto email) throws InValidDataException, Exception {
         Email e = contactService.addEmailAddress(email);
-        return new ResponseEntity(new EmailDto(e), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new EmailDto(e), HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value=ApiConstants.REST_URL_ADDRESS)
-    public ResponseEntity addAddress(@RequestBody AddressDto address) throws InValidDataException, Exception {
+    public ResponseEntity<Object> addAddress(@RequestBody AddressDto address) throws InValidDataException, Exception {
         Address a = contactService.addNewAddress(address);
-        return new ResponseEntity(new AddressDto(a), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new AddressDto(a), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value=ApiConstants.REST_URL_CONTACT_DETAILS)
-    public ResponseEntity getContactDetails(@PathVariable(name="id") Long id) throws InValidDataException, DataNotFoundException {
+    public ResponseEntity<Object> getContactDetails(@PathVariable(name="id") Long id) throws WiseNoteException{
         CompContactDto c = contactService.findContactDetailsById(id);
-        return new ResponseEntity(c, HttpStatus.OK);
+        return new ResponseEntity<>(c, HttpStatus.OK);
     }
 }

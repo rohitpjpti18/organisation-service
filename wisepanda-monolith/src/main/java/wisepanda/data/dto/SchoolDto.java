@@ -3,8 +3,9 @@ package wisepanda.data.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import wisepanda.data.dto.contact.ContactDto;
 import wisepanda.data.entities.School;
-import wisepanda.data.enums.AffiliationType;
+import wisepanda.enums.AffiliationType;
 
 import java.io.Serializable;
 

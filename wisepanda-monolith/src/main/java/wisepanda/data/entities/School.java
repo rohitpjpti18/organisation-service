@@ -2,7 +2,7 @@ package wisepanda.data.entities;
 
 import lombok.*;
 import wisepanda.data.entities.contact.Contact;
-import wisepanda.data.enums.AffiliationType;
+import wisepanda.enums.AffiliationType;
 
 import javax.persistence.*;
 import java.util.Objects;

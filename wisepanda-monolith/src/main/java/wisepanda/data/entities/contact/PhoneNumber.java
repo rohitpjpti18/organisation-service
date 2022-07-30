@@ -1,8 +1,8 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
-import wisepanda.data.enums.ActivationMethod;
-import wisepanda.data.enums.PhoneNumberType;
+import wisepanda.enums.ActivationMethod;
+import wisepanda.enums.PhoneNumberType;
 
 import javax.persistence.*;
 import java.time.Instant;

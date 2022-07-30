@@ -1,4 +1,4 @@
-package wisepanda.data.dto;
+package wisepanda.data.dto.question;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TopicTagDto implements Serializable {
-    @JsonIgnore
+
     private Long id;
     private String tagName;
     private Boolean isApproved;

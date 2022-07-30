@@ -18,6 +18,7 @@ spring:
   data:
     rest:
       base-path: /api
-
+  jackson:
+    default-property-inclusion: NON_NULL
 
 #spring.liquibase.change-log=classpath:db/changelog/db.changelog-local.xml

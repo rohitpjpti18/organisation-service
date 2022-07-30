@@ -1,4 +1,4 @@
-package wisepanda.data.enums;
+package wisepanda.enums;
 
 public enum EmailType {
     MAIN, ALTERNATE

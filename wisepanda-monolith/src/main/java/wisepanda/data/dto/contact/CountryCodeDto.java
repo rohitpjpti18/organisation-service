@@ -1,4 +1,4 @@
-package wisepanda.data.dto;
+package wisepanda.data.dto.contact;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
