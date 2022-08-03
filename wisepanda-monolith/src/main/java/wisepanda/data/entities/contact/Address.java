@@ -1,7 +1,7 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
-import wisepanda.data.enums.AddressType;
+import wisepanda.enums.AddressType;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,22 +10,27 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="ADDRESS")
+@Table(name="address")
 @Entity
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_address_seq")
+    @SequenceGenerator(name = "s_address_seq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CONTACT_ID")
+    @JoinColumn(name = "contact_id")
     @ToString.Exclude
     private Contact contact;
 
-    @Column(name="TYPE")
+    @Column(name="type")
     private AddressType addressType;
 
-    @Column(name="IS_APPROVED")
-    private Boolean isApproved;
+    @Column(name="details")
+    private String detail;
+
+    @Column(name="is_approved")
+    private Boolean isApproved = false;
 
     @Override
     public boolean equals(Object o) {

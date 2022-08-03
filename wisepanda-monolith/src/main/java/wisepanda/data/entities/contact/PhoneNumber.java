@@ -1,7 +1,8 @@
 package wisepanda.data.entities.contact;
 
 import lombok.*;
-import wisepanda.data.enums.PhoneNumberType;
+import wisepanda.enums.ActivationMethod;
+import wisepanda.enums.PhoneNumberType;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -11,29 +12,42 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="PHONE_NUMBER")
+@Table(name="phone_number")
 @Entity
 public class PhoneNumber {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_phone_number_seq")
+    @SequenceGenerator(name = "s_phone_number_seq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CONTACT_ID")
+    @JoinColumn(name = "contact_id")
     @ToString.Exclude
     private Contact contact;
 
-    @Column(name="NUMBER")
-    @NonNull
+    @Column(name="number")
     private String number;
 
-    @Column(name="TYPE")
+    @Column(name="type")
     @Enumerated(EnumType.STRING)
     private PhoneNumberType type;
 
     @ManyToOne
-    @JoinColumn(name = "COUNTRY_CODE_ID")
+    @JoinColumn(name = "country_code_id")
     private CountryCode countryCode;
+
+    @Column(name="is_verified")
+    private Boolean isVerified;
+
+    @Column(name="is_active")
+    private Boolean isActive = false;
+
+    @Column(name="activated_on")
+    private Instant activatedOn;
+
+    @Column(name="activation_method")
+    private ActivationMethod activationMethod;
 
     @Override
     public boolean equals(Object o) {

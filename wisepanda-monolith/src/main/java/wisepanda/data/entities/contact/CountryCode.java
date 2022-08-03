@@ -2,32 +2,29 @@ package wisepanda.data.entities.contact;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.time.Instant;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name="COUNTRY_CODE")
+@Table(name="country_code")
 @Entity
 public class CountryCode {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_country_code_seq")
+    @SequenceGenerator(name = "s_country_code_seq")
     private Long id;
 
-    @Column(name = "COUNTRY_NAME")
+    @Column(name = "country_name")
     private String countryName;
 
-    @Column(name = "COUNTRY_CODE")
+    @Column(name = "country_code", unique = true)
     private String countryCode;
 
-    @Column(name="IS_APPROVED")
-    private Boolean isApproved;
+    @Column(name="is_approved")
+    private Boolean isApproved = false;
 
     @Override
     public boolean equals(Object o) {

@@ -1,12 +1,29 @@
 package wisepanda.common;
 
+/*
+ * @Author rohit_prajapati
+ * @Email  rohit_prajapati@zohomail.in
+ *
+ */
 public class ApiConstants {
-    public static final String GENERAL_REST_API_BASE = "/api/v1";
+    public static final String REST_URL_ROOT                    = "/api/v1";
 
-    public static final String ADD = "/add/{" + ApiConstants.PV_ENTITY + "}";
-    public static final String ADD_COUNTRY_CODE = "/add/country-code";
+    // Contact Rest Api Endpoints
+    public static final String REST_URL_CONTACT_ROOT            = REST_URL_ROOT + "/contact";
+    public static final String REST_URL_CONTACT                 = "/";
+    public static final String REST_URL_COUNTRY_CODE            = "/country-code";
+    public static final String REST_URL_PHONE_NUMBER            = "/phone-number";
+    public static final String REST_URL_EMAIL                   = "/email";
+    public static final String REST_URL_ADDRESS                 = "/address";
+    public static final String REST_URL_CONTACT_DETAILS         = "/contact-details/{id}";
 
-    // Path Variables
-    public static final String PV_ENTITY = "entity";
+    // Question Rest Api Endpoints
+    public static final String REST_URL_QUESTION_ROOT           = REST_URL_ROOT + "/question";
+    public static final String REST_URL_QUESTION                = "/";
+    public static final String REST_URL_TOPIC_TAG               = "/topic-tag";
 
+    // Organisation Rest Api Endpoints
+    public static final String REST_URL_ORGANISATION_ROOT       = REST_URL_ROOT + "/organisation";
+    public static final String REST_URL_ORGANISATION            = "/";
+    public static final String REST_URL_QUESTION_TAG            = "/tags";
 }
