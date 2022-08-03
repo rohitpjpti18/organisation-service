@@ -18,9 +18,9 @@ public class OrganisationRestApi {
     private OrganisationService organisationService;
 
     @PostMapping(ApiConstants.REST_URL_ORGANISATION)
-    public ResponseEntity addNewOrganisation(@RequestBody OrganisationDto data) throws InValidDataException {
+    public ResponseEntity<Object> addNewOrganisation(@RequestBody OrganisationDto data) throws InValidDataException {
         Organisation o = organisationService.addOrganisation(data);
 
-        return new ResponseEntity(new OrganisationDto(o), HttpStatus.ACCEPTED);
+        return new ResponseEntity<Object>(new OrganisationDto(o), HttpStatus.ACCEPTED);
     }
 }

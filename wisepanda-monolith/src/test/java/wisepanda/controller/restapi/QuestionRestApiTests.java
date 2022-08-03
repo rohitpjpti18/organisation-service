@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 
 import net.minidev.json.JSONObject;
 import wisepanda.common.ApiConstants;
-import wisepanda.data.dto.ServiceResponse;
+import wisepanda.data.dto.app.ServiceResponse;
 import wisepanda.data.dto.question.QuestionDto;
 import wisepanda.exceptions.WiseNoteException;
 

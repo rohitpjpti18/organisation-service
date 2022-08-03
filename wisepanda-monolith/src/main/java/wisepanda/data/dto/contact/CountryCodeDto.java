@@ -2,6 +2,8 @@ package wisepanda.data.dto.contact;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,11 +17,11 @@ import java.io.Serializable;
 public class CountryCodeDto implements Serializable {
     @JsonIgnore
     private Long id;
-    @JsonAlias({"country_name"})
+    @JsonProperty("country-name")
     private String countryName;
-    @JsonAlias({"country_code"})
+    @JsonProperty("country-code")
     private String countryCode;
-    @JsonAlias({"is_approved"})
+    @JsonProperty("is-approved")
     private Boolean isApproved = false;
 
     public CountryCodeDto(CountryCode c) {

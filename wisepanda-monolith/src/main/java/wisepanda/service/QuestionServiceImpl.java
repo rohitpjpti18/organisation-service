@@ -6,13 +6,16 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import wisepanda.common.Constants;
 import wisepanda.common.ErrorConstants;
 import wisepanda.data.dao.GeneralDao;
-import wisepanda.data.dto.ServiceResponse;
+import wisepanda.data.dto.app.ServiceResponse;
 import wisepanda.data.dto.question.QuestionDto;
 import wisepanda.data.dto.question.QuestionMultipleChoiceDto;
 import wisepanda.data.dto.question.QuestionTagsDto;
 import wisepanda.data.dto.question.TopicTagDto;
+import wisepanda.data.entities.Organisation;
 import wisepanda.data.entities.question.Question;
 import wisepanda.data.entities.question.QuestionMultipleChoice;
 import wisepanda.data.entities.question.QuestionTags;
@@ -35,16 +38,88 @@ public class QuestionServiceImpl implements QuestionService{
     private GeneralDao generalDao;
 
     @Override
-    public List<Question> bulkAddQuestion(List<QuestionDto> questionsDto) throws WiseNoteException {
+    public ServiceResponse bulkAddQuestion(List<QuestionDto> questionsDto) throws WiseNoteException {
         return null;
     }
 
     @Override
-    public Question addQuestion(QuestionDto data) throws WiseNoteException {
-        if(data == null) throw new InValidDataException(new HashMap<String, String>());
+    public ServiceResponse addQuestion(QuestionDto data) throws WiseNoteException {
+        data = InputValidator.validate(data);
+
         Question q = new Question();
         data.fill(q);
-        return generalDao.question.saveAndFlush(q);
+        q = generalDao.question.saveAndFlush(q);
+        ServiceResponse s = new ServiceResponse();
+        s.setHttpStatus(HttpStatus.OK);
+        s.setResult(q);
+
+        return s;
+    }
+
+    @Override
+    public Question getQuestion(QuestionDto data) throws WiseNoteException{
+        if(data == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+
+        if(data.getId() != null) {
+            Optional<Question> q = generalDao.question.findById(data.getId());
+            if(!q.isPresent()) {
+                Map<String, String> error = new HashMap<>();
+                error.put(ErrorConstants.DATA_NOT_FOUND, ErrorConstants.NOT_FOUND_QUESTION);
+                throw new InValidDataException(error);
+            }
+            return q.get();
+        }else{
+            Map<String, String> error = new HashMap<>();
+            error.put(ErrorType.ERROR_INPUT_INVALID.code, "Id is null");
+            throw new InValidDataException(error);
+        }
+    }
+
+    @Override
+    public ServiceResponse updateQuestion(QuestionDto data) throws WiseNoteException {
+        data = InputValidator.validate(data);
+
+        ServiceResponse r = new ServiceResponse();
+        Question q = generalDao.question.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
+        Organisation o = generalDao.organisation.findById(data.getOrganisation().getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
+        q.setOrganisation(o);
+        q.setIsApproved(data.getIsApproved());
+        q.setQuestionName(data.getQuestionName());
+
+        r.setResult(generalDao.question.saveAndFlush(q));
+        r.setHttpStatus(HttpStatus.OK);
+
+        return r;
+    }
+
+    @Override
+    public ServiceResponse deleteQuestion(QuestionDto data, String deleteBy) throws WiseNoteException {
+        switch(deleteBy) {
+            case Constants.DELETE_BY_QUESTION_ID: {
+                if(data.getId() == null)
+                    throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+
+                generalDao.question.deleteById(data.getId());
+                ServiceResponse s = new ServiceResponse();
+                s.setHttpStatus(HttpStatus.OK);
+                s.setResult("Question with id: " + data.getId() + " deleted successfully." );
+                return s;
+            }
+            case Constants.DELETE_BY_QUESTION_NAME: {
+                if(data.getQuestionName() == null)
+                    throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+                break;
+            }
+            case Constants.DELETE_BY_ORGANISATION_ID: {
+                if(data.getOrganisation().getId() == null) 
+                    throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+                break;
+            }
+            default: {
+                throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -78,25 +153,7 @@ public class QuestionServiceImpl implements QuestionService{
 
         return qm;
     }
-
-    @Override
-    public Question getQuestion(QuestionDto data) throws WiseNoteException{
-        if(data == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
-
-        if(data.getId() != null) {
-            Optional<Question> q = generalDao.question.findById(data.getId());
-            if(!q.isPresent()) {
-                Map<String, String> error = new HashMap<>();
-                error.put(ErrorConstants.DATA_NOT_FOUND, ErrorConstants.NOT_FOUND_QUESTION);
-                throw new InValidDataException(error);
-            }
-            return q.get();
-        }else{
-            Map<String, String> error = new HashMap<>();
-            error.put(ErrorType.ERROR_INPUT_INVALID.code, "Id is null");
-            throw new InValidDataException(error);
-        }
-    }
+    
 
     @Override
     public TopicTag addTopicTag(TopicTagDto data) throws WiseNoteException {

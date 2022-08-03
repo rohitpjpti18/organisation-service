@@ -5,6 +5,9 @@ import lombok.*;
 import wisepanda.data.entities.Organisation;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 
@@ -22,13 +25,22 @@ public class Question {
     private Long id;
 
     @Column(name="question_name")
+    @JsonProperty("question_name")
     private String questionName;
 
     @ManyToOne
     @JoinColumn(name="organisation_id")
     private Organisation organisation;
 
+    @Column(name="default_weightage")
+    @JsonProperty("default_weightage")
+    private Short defaultWeightage;
+
+    @Column(name="negative_marking")
+    private Short negativeMarking = 0;
+
     @Column(name="is_approved")
+    @JsonProperty("is_approved")
     private Boolean isApproved;
 
     @Override

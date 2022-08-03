@@ -1,5 +1,9 @@
 package wisepanda.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import wisepanda.data.dao.GeneralDao;
 import wisepanda.data.dto.*;
 import wisepanda.data.dto.contact.AddressDto;
 import wisepanda.data.dto.contact.ContactDto;
@@ -15,37 +19,41 @@ import wisepanda.enums.ErrorType;
 import wisepanda.exceptions.InValidDataException;
 import wisepanda.exceptions.WiseNoteException;
 
+@Component
 public class InputValidator {
+    @Autowired
+    private static GeneralDao generalDao;
+    
     public static CountryCodeDto validate(CountryCodeDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 
     public static PhoneNumberDto validate(PhoneNumberDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 
     public static EmailDto validate(EmailDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 
     public static AddressDto validate(AddressDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 
     public static ContactDto validate(ContactDto data) throws  InValidDataException {
-        return null;
+        return data;
     }
 
     public static OrganisationDto validate(OrganisationDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 
     public static SchoolDto validate(SchoolDto data) throws WiseNoteException {
-        return null;
+        return data;
     }
 
     public static QuestionDto validate(QuestionDto data) throws WiseNoteException {
-        return null;
+        return data;
     }
 
     public static TopicTagDto validate(TopicTagDto data) throws WiseNoteException {
@@ -66,10 +74,10 @@ public class InputValidator {
     }
 
     public static QuestionDetailTypeDto validate(QuestionDetailTypeDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 
     public static QuestionMultipleChoiceDto validate(QuestionMultipleChoiceDto data) throws InValidDataException {
-        return null;
+        return data;
     }
 }

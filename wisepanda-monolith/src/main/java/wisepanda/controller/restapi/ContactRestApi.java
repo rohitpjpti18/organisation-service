@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import wisepanda.common.ApiConstants;
-import wisepanda.data.dto.*;
 import wisepanda.data.dto.contact.AddressDto;
 import wisepanda.data.dto.contact.CompContactDto;
 import wisepanda.data.dto.contact.ContactDto;
@@ -64,6 +63,7 @@ public class ContactRestApi {
 
     @PostMapping(value=ApiConstants.REST_URL_COUNTRY_CODE)
     public ResponseEntity<Object> addCountry(@RequestBody CountryCodeDto countryCodeDto) throws WiseNoteException, InValidDataException {
+        log.info(countryCodeDto);
         CountryCode c = contactService.addCountryCode(countryCodeDto);
         return new ResponseEntity<>(new CountryCodeDto(c), HttpStatus.ACCEPTED);
     }

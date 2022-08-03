@@ -1,14 +1,18 @@
 package wisepanda.controller.restapi;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wisepanda.common.ApiConstants;
-import wisepanda.data.dto.ServiceResponse;
+import wisepanda.data.dto.app.ServiceResponse;
 import wisepanda.data.dto.question.QuestionDto;
 import wisepanda.data.dto.question.QuestionTagsDto;
 import wisepanda.data.dto.question.TopicTagDto;
@@ -26,13 +30,28 @@ public class QuestionRestApi {
     private QuestionService questionService;
 
     @PostMapping(ApiConstants.REST_URL_QUESTION)
-    public ResponseEntity<QuestionDto> addQuestion(@RequestBody QuestionDto data) throws WiseNoteException {
-        Question q = questionService.addQuestion(data);
-        return new ResponseEntity<>(new QuestionDto(q), HttpStatus.OK);
+    public ResponseEntity<ServiceResponse> addQuestion(@RequestBody QuestionDto data) throws WiseNoteException {
+        ServiceResponse q = questionService.addQuestion(data);
+        return new ResponseEntity<>(q, q.getHttpStatus());
     }
 
+    @PutMapping(ApiConstants.REST_URL_QUESTION)
+    public ResponseEntity<ServiceResponse> updateQuestion(@RequestBody QuestionDto data) throws WiseNoteException {
+        ServiceResponse q = questionService.updateQuestion(data);
+
+        return new ResponseEntity<>(q, q.getHttpStatus());
+    }
+
+    @DeleteMapping(ApiConstants.REST_URL_QUESTION)
+    public ResponseEntity<ServiceResponse> deleteQuestion(@RequestParam("delete-by")String deleteBy, @RequestBody QuestionDto data) throws WiseNoteException {
+        ServiceResponse s = questionService.deleteQuestion(data, deleteBy);
+
+        return new ResponseEntity<>(s, s.getHttpStatus());
+    }
+
+
     @PostMapping(ApiConstants.REST_URL_TOPIC_TAG)
-    public ResponseEntity addTopicTag(@RequestBody TopicTagDto data) throws WiseNoteException {
+    public ResponseEntity<Object> addTopicTag(@RequestBody TopicTagDto data) throws WiseNoteException {
         TopicTag t = questionService.addTopicTag(data);
         ServiceResponse s = new ServiceResponse();
         s.setResult(new TopicTagDto(t));
