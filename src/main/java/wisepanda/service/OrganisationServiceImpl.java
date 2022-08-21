@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import wisepanda.common.ErrorConstants;
 import wisepanda.data.dao.GeneralDao;
 import wisepanda.data.dto.OrganisationDto;
@@ -23,9 +24,12 @@ public class OrganisationServiceImpl implements OrganisationService {
     @Autowired
     private GeneralDao generalDao;
 
+    @Autowired
+    private InputValidator validationService;
+
     @Override
     public Organisation addOrganisation(OrganisationDto data) throws InValidDataException {
-        data = InputValidator.validate(data);
+        data = validationService.validate(data);
         log.info(data);
 
         Organisation o = new Organisation();

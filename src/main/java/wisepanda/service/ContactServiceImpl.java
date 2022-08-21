@@ -28,62 +28,278 @@ public class ContactServiceImpl implements ContactService{
     @Autowired
     private GeneralDao generalDao;
 
+    @Autowired
+    private InputValidator validationService;
+    /*
+     * Country Code methods
+     * @Author: rohit_prajapati
+     */
     @Override
-    public CountryCode addCountryCode(CountryCodeDto data) throws InValidDataException {
-        data = InputValidator.validate(data);
+    public CountryCode addCountryCode(CountryCodeDto data) throws WiseNoteException {
+        data = validationService.validate(data);
 
-        Optional<CountryCode> o = generalDao.countryCode.findByCountryCode(data.getCountryCode());
-        if(o.isPresent()) {
-            return o.get();
-        }else{
-            CountryCode c = new CountryCode();
+        
+        
+        CountryCode c = new CountryCode();
+        data.fill(c);
+        log.info(c);
+        return generalDao.countryCode.saveAndFlush(c);
+    }
+
+    @Override
+    public List<CountryCode> getCountryCode(CountryCodeDto data) throws WiseNoteException {
+        CountryCode c = generalDao.countryCode.findByCountryCode(data.getCountryCode()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: COUNTRY_CODE, Id: " + data.getId()));;
+        List<CountryCode> result = new ArrayList<>();
+        result.add(c);
+
+        return result;
+    }
+
+    @Override
+    public CountryCode updateCountryCode(CountryCodeDto data) throws WiseNoteException {
+        try{
+            validationService.validate(data);
+
+            CountryCode c = generalDao.countryCode.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: COUNTRY_CODE, Id: " + data.getId()));
             data.fill(c);
-            log.info(c);
             return generalDao.countryCode.saveAndFlush(c);
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
         }
     }
 
     @Override
-    public Address addNewAddress(AddressDto data) throws WiseNoteException, InValidDataException {
-        data = InputValidator.validate(data);
+    public void deleteCountryCode(CountryCodeDto data) throws WiseNoteException {
+        try{
+            validationService.validate(data);
+
+            generalDao.countryCode.deleteById(data.getId());
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
 
 
-        Address a = new Address();
-        a.setContact(this.findContact(data.getContact()));
-        data.fill(a);
 
-        return generalDao.address.saveAndFlush(a);
+
+
+
+
+
+
+
+
+    /*
+     * Address methods
+     * @Author: rohit_prajapati
+     */
+    @Override
+    public Address addAddress(AddressDto data) throws WiseNoteException, InValidDataException {
+        try{
+            data = validationService.validate(data);
+
+            Address a = new Address();
+            a.setContact(this.findContact(data.getContact()));
+            data.fill(a);
+            return generalDao.address.saveAndFlush(a);
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
+
+    @Override 
+    public List<Address> getAddress(AddressDto data) throws WiseNoteException {
+        Address a = generalDao.address.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: ADDRESS, Id: " + data.getId()));
+        List<Address> result = new ArrayList<>();
+        result.add(a);
+
+        return result;
     }
 
     @Override
-    public Email addEmailAddress(EmailDto data) throws WiseNoteException, InValidDataException {
-        data = InputValidator.validate(data);
+    public Address updateAddress(AddressDto data) throws WiseNoteException {
+        try{
+            validationService.validate(data);
 
-        Email e = new Email();
-        e.setContact(this.findContact(data.getContact()));
-        data.fill(e);
-
-        return generalDao.email.saveAndFlush(e);
+            Address a = generalDao.address.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: ADDRESS, Id: " + data.getId()));
+            data.fill(a);
+            return generalDao.address.saveAndFlush(a);
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
     }
 
     @Override
-    public PhoneNumber addPhoneNumber(PhoneNumberDto data) throws WiseNoteException, InValidDataException {
-        data = InputValidator.validate(data);
+    public void deleteAddress(AddressDto data) throws WiseNoteException {
+        try {
+            validationService.validate(data);
 
-        PhoneNumber p = new PhoneNumber();
-        p.setContact(findContact(data.getContact()));
-        p.setCountryCode(findCountryCode(data.getCountryCode()));
-        data.fill(p);
+            generalDao.address.deleteById(data.getId());
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
 
-        return generalDao.phoneNumber.saveAndFlush(p);
+
+
+
+
+
+
+
+
+
+    /*
+     * Email: methods
+     * @Author: rohit_prajapati
+     */
+    @Override
+    public Email addEmailAddress(EmailDto data) throws WiseNoteException {
+        try{
+            data = validationService.validate(data);
+            
+            Email e = new Email();
+            e.setContact(this.findContact(data.getContact()));
+            data.fill(e);
+    
+            return generalDao.email.saveAndFlush(e);
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
     }
 
     @Override
-    public CountryCode findCountryCode(CountryCodeDto data) throws WiseNoteException, InValidDataException {
-        Optional<CountryCode> c = generalDao.countryCode.findByCountryCode(data.getCountryCode());
-        if(!c.isPresent()) throw new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND);
-        return c.get();
+    public Email updateEmailAddress(EmailDto data) throws WiseNoteException {
+        try{
+            data = validationService.validate(data);
+
+            final Long id = data.getId();
+            Email e = generalDao.email.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: EMAIL, Id: " + id));
+            data.fill(e);
+            return generalDao.email.saveAndFlush(e);
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
     }
+
+    @Override
+    public void deleteEmailAddress(EmailDto data) throws WiseNoteException {
+        try {
+            validationService.validate(data);
+            generalDao.email.deleteById(data.getId());
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
+
+    @Override
+    public List<Email> getEmailAddress(EmailDto data) throws WiseNoteException {
+        Email e = generalDao.email.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: EMAIL, Id: " + data.getId()));
+        List<Email> result = new ArrayList<>();
+        result.add(e);
+
+        return result;
+    }
+
+
+
+
+
+
+
+
+    /*
+     * PhoneNumber: methods
+     * @Author: rohit_prajapati
+     */
+    @Override
+    public PhoneNumber addPhoneNumber(PhoneNumberDto data) throws WiseNoteException {
+        try{
+            data = validationService.validate(data);
+
+            PhoneNumber p = new PhoneNumber();
+            p.setContact(findContact(data.getContact()));
+            p.setCountryCode(getCountryCode(data.getCountryCode()).get(0));
+            data.fill(p);
+
+            return generalDao.phoneNumber.saveAndFlush(p);
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
+
+    @Override
+    public PhoneNumber updatePhoneNumber(PhoneNumberDto data) throws WiseNoteException {
+        try{
+            data = validationService.validate(data);
+
+            final Long id = data.getId();
+            PhoneNumber ph = generalDao.phoneNumber.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: PHONE_NUMBER, Id: " + id));
+            data.fill(ph);
+            return generalDao.phoneNumber.saveAndFlush(ph);
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
+
+    @Override
+    public void deletePhoneNumber(PhoneNumberDto data) throws WiseNoteException {
+        try {
+            validationService.validate(data);
+            generalDao.email.deleteById(data.getId());
+        } catch (WiseNoteException e) {
+            throw e;
+        } catch(Exception e) {
+            WiseNoteException err = new WiseNoteException(e);
+            throw err;
+        }
+    }
+
+    @Override
+    public List<PhoneNumber> getPhoneNumber(PhoneNumberDto data) throws WiseNoteException {
+        PhoneNumber ph = generalDao.phoneNumber.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: PHONE_NUMBER, Id: " + data.getId()));
+        List<PhoneNumber> result = new ArrayList<>();
+        result.add(ph);
+
+        return result;
+    }
+
+    
+
+
+
+
+
+
+
 
     @Override
     public Contact findContact(ContactDto data) throws WiseNoteException, InValidDataException {

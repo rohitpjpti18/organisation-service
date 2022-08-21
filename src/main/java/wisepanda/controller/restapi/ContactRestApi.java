@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import wisepanda.common.ApiConstants;
+import wisepanda.data.dto.app.ServiceResponse;
 import wisepanda.data.dto.contact.AddressDto;
 import wisepanda.data.dto.contact.CompContactDto;
 import wisepanda.data.dto.contact.ContactDto;
@@ -50,7 +51,7 @@ public class ContactRestApi {
         while(compContact.getAddresses() != null && !compContact.getAddresses().isEmpty()) {
             AddressDto a = compContact.getAddresses().remove(0);
             a.setContact(dto);
-            saveddto.getAddresses().add(new AddressDto(contactService.addNewAddress(a)));
+            saveddto.getAddresses().add(new AddressDto(contactService.addAddress(a)));
         }
         while(compContact.getEmails() != null && !compContact.getEmails().isEmpty()){
             EmailDto e = compContact.getEmails().remove(0);
@@ -81,9 +82,12 @@ public class ContactRestApi {
     }
 
     @PostMapping(value=ApiConstants.REST_URL_ADDRESS)
-    public ResponseEntity<Object> addAddress(@RequestBody AddressDto address) throws InValidDataException, Exception {
-        Address a = contactService.addNewAddress(address);
-        return new ResponseEntity<>(new AddressDto(a), HttpStatus.ACCEPTED);
+    public ResponseEntity<ServiceResponse> addAddress(@RequestBody AddressDto address) throws InValidDataException, Exception {
+        ServiceResponse s = new ServiceResponse();
+        Address a = contactService.addAddress(address);
+        s.setHttpStatus(HttpStatus.OK);
+        s.setResult(a);
+        return new ResponseEntity<>(s, s.getHttpStatus());
     }
 
     @GetMapping(value=ApiConstants.REST_URL_CONTACT_DETAILS)

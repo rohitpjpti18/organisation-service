@@ -21,42 +21,48 @@ import wisepanda.exceptions.WiseNoteException;
 
 @Component
 public class InputValidator {
-    @Autowired
-    private static GeneralDao generalDao;
     
-    public static CountryCodeDto validate(CountryCodeDto data) throws InValidDataException {
+    @Autowired
+    private GeneralDao generalDao;
+    
+    public CountryCodeDto validate(CountryCodeDto data) throws WiseNoteException {
+        if(generalDao.countryCode.findByCountryCode(data.getCountryCode()).isPresent()) {
+            final Long id = data.getId();
+            throw new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: COUNTRY_CODE, Id: " + id);
+        }
+
         return data;
     }
 
-    public static PhoneNumberDto validate(PhoneNumberDto data) throws InValidDataException {
+    public PhoneNumberDto validate(PhoneNumberDto data) throws InValidDataException {
         return data;
     }
 
-    public static EmailDto validate(EmailDto data) throws InValidDataException {
+    public EmailDto validate(EmailDto data) throws InValidDataException {
         return data;
     }
 
-    public static AddressDto validate(AddressDto data) throws InValidDataException {
+    public AddressDto validate(AddressDto data) throws InValidDataException {
         return data;
     }
 
-    public static ContactDto validate(ContactDto data) throws  InValidDataException {
+    public ContactDto validate(ContactDto data) throws  InValidDataException {
         return data;
     }
 
-    public static OrganisationDto validate(OrganisationDto data) throws InValidDataException {
+    public OrganisationDto validate(OrganisationDto data) throws InValidDataException {
         return data;
     }
 
-    public static SchoolDto validate(SchoolDto data) throws WiseNoteException {
+    public SchoolDto validate(SchoolDto data) throws WiseNoteException {
         return data;
     }
 
-    public static QuestionDto validate(QuestionDto data) throws WiseNoteException {
+    public QuestionDto validate(QuestionDto data) throws WiseNoteException {
         return data;
     }
 
-    public static TopicTagDto validate(TopicTagDto data) throws WiseNoteException {
+    public TopicTagDto validate(TopicTagDto data) throws WiseNoteException {
         if(data == null) {
             WiseNoteException err = new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
             throw err;
@@ -65,7 +71,7 @@ public class InputValidator {
         return data;
     }
 
-    public static QuestionTagsDto validate(QuestionTagsDto data) throws WiseNoteException {
+    public QuestionTagsDto validate(QuestionTagsDto data) throws WiseNoteException {
         if(data == null) {
             WiseNoteException err = new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
             throw err;
@@ -73,11 +79,11 @@ public class InputValidator {
         return data;
     }
 
-    public static QuestionDetailTypeDto validate(QuestionDetailTypeDto data) throws InValidDataException {
+    public QuestionDetailTypeDto validate(QuestionDetailTypeDto data) throws InValidDataException {
         return data;
     }
 
-    public static QuestionMultipleChoiceDto validate(QuestionMultipleChoiceDto data) throws InValidDataException {
+    public QuestionMultipleChoiceDto validate(QuestionMultipleChoiceDto data) throws InValidDataException {
         return data;
     }
 }

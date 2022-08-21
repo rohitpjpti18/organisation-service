@@ -19,14 +19,11 @@ public interface QuestionService {
     ServiceResponse deleteQuestion(QuestionDto data, String deleteBy) throws WiseNoteException;
 
     QuestionMultipleChoice addQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException;
-
     QuestionMultipleChoice getQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException;
 
     List<Long> getQuestionId(List<Long> topicTagIds) throws WiseNoteException;
-
     Question getQuestion(QuestionDto data) throws WiseNoteException;
 
     TopicTag addTopicTag(TopicTagDto data) throws WiseNoteException;
     ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException;
-
 }
