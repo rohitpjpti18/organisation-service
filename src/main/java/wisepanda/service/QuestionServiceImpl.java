@@ -37,6 +37,9 @@ public class QuestionServiceImpl implements QuestionService{
     @Autowired
     private GeneralDao generalDao;
 
+    @Autowired
+    private InputValidator validationService;
+
     @Override
     public ServiceResponse bulkAddQuestion(List<QuestionDto> questionsDto) throws WiseNoteException {
         return null;
@@ -44,7 +47,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public ServiceResponse addQuestion(QuestionDto data) throws WiseNoteException {
-        data = InputValidator.validate(data);
+        data = validationService.validate(data);
 
         Question q = new Question();
         data.fill(q);
@@ -77,7 +80,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public ServiceResponse updateQuestion(QuestionDto data) throws WiseNoteException {
-        data = InputValidator.validate(data);
+        data = validationService.validate(data);
 
         ServiceResponse r = new ServiceResponse();
         Question q = generalDao.question.findById(data.getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
@@ -124,7 +127,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionMultipleChoice addQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException {
-        data = InputValidator.validate(data);
+        data = validationService.validate(data);
         
         QuestionMultipleChoice q = new QuestionMultipleChoice();
         data.fill(q);
@@ -135,7 +138,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionMultipleChoice getQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException {
-        //data = InputValidator.validate(data);
+        //data = validationService.validate(data);
         if(data == null) new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
         QuestionMultipleChoice qm = new QuestionMultipleChoice();
         qm = null;
@@ -157,7 +160,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public TopicTag addTopicTag(TopicTagDto data) throws WiseNoteException {
-        data = InputValidator.validate(data);
+        data = validationService.validate(data);
         TopicTag t = new TopicTag();
         data.fill(t);
         return generalDao.topicTag.saveAndFlush(t);
@@ -165,7 +168,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException {
-        data = InputValidator.validate(data);
+        data = validationService.validate(data);
 
         // Check if 
         //      1. question and topicTag with given id exists or not 

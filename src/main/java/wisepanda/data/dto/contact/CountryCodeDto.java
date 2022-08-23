@@ -1,12 +1,12 @@
 package wisepanda.data.dto.contact;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import wisepanda.data.entities.contact.CountryCode;
 
 import java.io.Serializable;

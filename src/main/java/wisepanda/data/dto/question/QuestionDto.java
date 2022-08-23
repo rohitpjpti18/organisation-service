@@ -1,10 +1,11 @@
 package wisepanda.data.dto.question;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import wisepanda.data.dto.OrganisationDto;
 import wisepanda.data.entities.question.Question;
 

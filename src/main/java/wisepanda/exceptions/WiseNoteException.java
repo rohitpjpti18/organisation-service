@@ -21,6 +21,14 @@ public class WiseNoteException extends Exception{
     @JsonProperty("response-status")
     public HttpStatus httpStatus;
 
+    public WiseNoteException(Exception err){
+        super(err.getMessage());
+        this.errorCode = ErrorType.ERROR_UNEXPECTED_EXCEPTION.code;
+        this.errorMsg = ErrorType.ERROR_UNEXPECTED_EXCEPTION.message;
+        this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        this.errorDetails = null;
+    }
+
     public WiseNoteException(ErrorType error) {
         super(error.getLogMessage());
         this.errorCode = error.code;
