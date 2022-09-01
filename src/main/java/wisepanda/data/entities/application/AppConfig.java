@@ -7,7 +7,10 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.Instant;
 
@@ -19,10 +22,15 @@ import java.time.Instant;
 @Entity
 public class AppConfig {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_app_config_seq")
+    @SequenceGenerator(name = "s_app_config_seq", allocationSize = 1)
     private Long id;
 
     @Column(name="application")
     private String application;
+
+    @Column(name="group")
+    private String group;
 
     @Column(name="key")
     private String key;
