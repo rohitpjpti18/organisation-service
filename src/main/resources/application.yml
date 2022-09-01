@@ -2,6 +2,8 @@ server:
   port: 18097
 
 spring:
+  application:
+    name: wisenote-backend-core
   datasource:
     url: jdbc:postgresql://localhost:5432/dev_db
     username: dev_admin
