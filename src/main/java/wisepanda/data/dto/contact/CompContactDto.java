@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompContactDto {
-    @JsonIgnore
     private Long id;
     private ContactType type;
     @JsonAlias({"phone_numbers"})

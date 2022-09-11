@@ -18,7 +18,7 @@ public class PhoneNumber {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_phone_number_seq")
-    @SequenceGenerator(name = "s_phone_number_seq")
+    @SequenceGenerator(name = "s_phone_number_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

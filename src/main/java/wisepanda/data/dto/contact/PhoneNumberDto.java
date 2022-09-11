@@ -16,9 +16,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhoneNumberDto implements Serializable {
-    @JsonIgnore
     private Long id;
-    @JsonIgnore
     private ContactDto contact = new ContactDto();
     private String number;
     private PhoneNumberType type;

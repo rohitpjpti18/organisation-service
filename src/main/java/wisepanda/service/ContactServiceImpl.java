@@ -48,7 +48,7 @@ public class ContactServiceImpl implements ContactService{
 
     @Override
     public List<CountryCode> getCountryCode(CountryCodeDto data) throws WiseNoteException {
-        CountryCode c = generalDao.countryCode.findByCountryCode(data.getCountryCode()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity.name: COUNTRY_CODE, Id: " + data.getId()));;
+        CountryCode c = generalDao.countryCode.findByCountryCode(data.getCountryCode()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Entity Not found, Entity.name: COUNTRY_CODE, country_code: " + data.getId()));;
         List<CountryCode> result = new ArrayList<>();
         result.add(c);
 

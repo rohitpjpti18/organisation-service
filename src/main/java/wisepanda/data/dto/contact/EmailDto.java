@@ -15,7 +15,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailDto implements Serializable {
-    @JsonIgnore
     private Long id;
     
     private ContactDto contact = new ContactDto();

@@ -26,4 +26,10 @@ public class ApiConstants {
     public static final String REST_URL_ORGANISATION_ROOT       = REST_URL_ROOT + "/organisation";
     public static final String REST_URL_ORGANISATION            = "/";
     public static final String REST_URL_QUESTION_TAG            = "/tags";
+
+
+    // App Rest api endpoints
+    public static final String REST_URL_APP_ROOT                = REST_URL_ROOT + "/app";
+    public static final String REST_URL_REFRESH_CACHE           = "/refresh-cache";
+
 }

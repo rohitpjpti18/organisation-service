@@ -15,7 +15,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryCodeDto implements Serializable {
-    @JsonIgnore
     private Long id;
     @JsonProperty("country-name")
     private String countryName;

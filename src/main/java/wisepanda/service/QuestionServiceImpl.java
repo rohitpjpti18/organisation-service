@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Retry.Topic;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,9 @@ import wisepanda.enums.ErrorType;
 import wisepanda.exceptions.InValidDataException;
 import wisepanda.exceptions.WiseNoteException;
 import wisepanda.utils.InputValidator;
+import wisepanda.utils.StringUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +50,11 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public ServiceResponse addQuestion(QuestionDto data) throws WiseNoteException {
-        data = validationService.validate(data);
+        
 
         Question q = new Question();
         data.fill(q);
+        validate(q);
         q = generalDao.question.saveAndFlush(q);
         ServiceResponse s = new ServiceResponse();
         s.setHttpStatus(HttpStatus.OK);
@@ -159,11 +163,20 @@ public class QuestionServiceImpl implements QuestionService{
     
 
     @Override
-    public TopicTag addTopicTag(TopicTagDto data) throws WiseNoteException {
-        data = validationService.validate(data);
-        TopicTag t = new TopicTag();
-        data.fill(t);
-        return generalDao.topicTag.saveAndFlush(t);
+    public List<TopicTag> addTopicTag(TopicTagDto data) throws WiseNoteException {
+        List<String> tags = StringUtil.splitStr(data.getTagName());
+        Boolean isApproved = true;
+
+        List<TopicTag> result = new ArrayList<>();
+
+        for(String tag: tags){
+            TopicTag t = new TopicTag();
+            t.setTagName(tag.toUpperCase());
+            t.setIsApproved(isApproved);
+            result.add(generalDao.topicTag.saveAndFlush(t));
+
+        }
+        return result;
     }
 
     @Override
@@ -212,5 +225,12 @@ public class QuestionServiceImpl implements QuestionService{
         List<Long> questions = generalDao.questionTags.findByTopicId(topicTagIds);
 
         return questions;
+    }
+
+    @Override
+    public void validate(Question data) throws WiseNoteException {
+        if(StringUtil.isEmpty(data.getQuestionName())) {
+            throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+        }
     }
 }
