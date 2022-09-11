@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  	xmlns:h="http://java.sun.com/jsf/html"
+	  	xmlns:p="http://primefaces.org/ui"
+	  	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <style>
+        html body .custom.ui-button.ui-button-text-only .ui-icon-loading {
+            opacity: 0;
+        }
+        html body .custom.ui-button.ui-button-text-only .ui-icon-loading:before {
+            content: "\e94a";
+        }
+        html body .custom.ui-button, html body .custom.ui-button * {
+            transition-property: all;
+            transition-duration: .2s;
+        }
+        html body .custom.ui-button.ui-state-loading {
+            opacity: 1;
+            background: #888;
+            border-color: #888;
+        }
+        html body .custom.ui-button.ui-state-loading.ui-button-text-only .ui-button-text {
+            opacity: 1;
+            padding-left: 2rem;
+        }
+        html body .custom.ui-button.ui-state-loading.ui-button-text-only .ui-icon-loading {
+            opacity: 1;
+            left: 0;
+            margin-left: 0.5rem;
+        }
+    </style>
+</h:head>
+
+<h:body style="margin-left:50px">
+	<ui:composition template="/layout/app-layout.xhtml">
+	<ui:define name="content">
+    <h:form>
+        <p:accordionPanel widgetVar="Search Key">
+            <p:tab title="Add New Value">
+                <p:panelGrid columns="4"
+                columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                layout="grid"
+                styleClass="ui-panelgrid-blank"
+                style="border:0px none; background-color:transparent;">   
+                    <p:row> 
+                        <p:column styleClass="ui-grid-col-1" style="text-align: right;">
+                            <h:outputLabel for="groupName" value="Group Name"/>
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-3">
+                            <p:inputText id="groupName" value="#{cacheBean.newValue.keyGroup}" style="width: 100%"/>
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-1" style="text-align: right;">
+                            <h:outputLabel for="key" value="Key" />
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-3">
+                            <p:inputText id="key" value="#{cacheBean.newValue.key}" style="width: 100%"/>
+                        </p:column>
+                    </p:row>
+                    <p:row> 
+                        <p:column styleClass="ui-grid-col-1" style="text-align: right;">
+                            <h:outputLabel for="value_search" value="Value"/>
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-10">
+                            <p:inputText id="value_search" value="#{cacheBean.newValue.value}" style="width: 100%" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+            </p:tab>
+        </p:accordionPanel>	
+
+        <p:panelGrid columns="2"
+                columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                layout="grid"
+                styleClass="ui-panelgrid-blank"
+                style="border:0px none; background-color:transparent;">
+            <p:row>
+                <p:column styleClass="ui-grid-col-10"></p:column>
+                <p:column styleClass="ui-grid-col-2" style="justify-items: right;">
+                    <p:commandButton value="Add Value" styleClass="ui-button-outlined" action="#{cacheBean.addValue}" update="@form" style="width: 100%;"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+        
+        <div class="card">
+            <p:dataTable id="appConfig" var="config" value="#{cacheBean.result}" 
+                paginator="true" rows="20" paginatorPosition="bottom"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                selection="#{cacheBean.selectedAppConfig}"
+                rowsPerPageTemplate="5,10,20,50,100" lazy="true"
+            >
+                    <p:column headerText="Group Name" sortBy="#{config.keyGroup}" filterBy="#{config.keyGroup}">
+                    <h:outputText value="#{config.keyGroup}" />
+                </p:column>
+
+                <p:column headerText="Key" sortBy="#{config.key}" filterBy="#{config.key}">
+                    <h:outputText value="#{config.key}" />
+                </p:column>
+
+                <p:column headerText="Value" sortBy="#{config.value}" filterBy="#{config.value}">
+                    <h:outputText value="#{config.value}" />
+                </p:column>
+            </p:dataTable>
+        </div>
+    </h:form>    
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

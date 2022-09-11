@@ -17,7 +17,7 @@ public class Email {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_email_seq")
-    @SequenceGenerator(name = "s_email_seq")
+    @SequenceGenerator(name = "s_email_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

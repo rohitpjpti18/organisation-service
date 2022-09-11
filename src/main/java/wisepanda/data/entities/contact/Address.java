@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_address_seq")
-    @SequenceGenerator(name = "s_address_seq")
+    @SequenceGenerator(name = "s_address_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

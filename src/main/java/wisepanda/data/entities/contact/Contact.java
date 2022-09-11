@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_contact_seq")
-    @SequenceGenerator(name = "s_contact_seq")
+    @SequenceGenerator(name = "s_contact_seq", allocationSize = 1)
     private Long id;
 
     @Column(name="type")

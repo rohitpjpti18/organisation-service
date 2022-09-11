@@ -1,5 +1,8 @@
 package wisepanda.controller.restapi;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,10 +52,12 @@ public class QuestionRestApi {
 
 
     @PostMapping(ApiConstants.REST_URL_TOPIC_TAG)
-    public ResponseEntity<Object> addTopicTag(@RequestBody TopicTagDto data) throws WiseNoteException {
-        TopicTag t = questionService.addTopicTag(data);
+    public ResponseEntity<ServiceResponse> addTopicTag(@RequestBody TopicTagDto data) throws WiseNoteException {
+        List<TopicTag> t = questionService.addTopicTag(data);
         ServiceResponse s = new ServiceResponse();
-        s.setResult(new TopicTagDto(t));
+        s.setHttpStatus(HttpStatus.OK);
+        s.setTimestamp(LocalDateTime.now());
+        s.setResult(t);
 
         return new ResponseEntity<>(s, HttpStatus.OK);
     }

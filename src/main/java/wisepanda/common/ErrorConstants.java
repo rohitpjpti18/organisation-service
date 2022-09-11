@@ -32,4 +32,11 @@ public class ErrorConstants {
     public static final String NOT_FOUND_ORGANISATION           = "ENTITY_NAME: Organisation, ENTITY_ID: ";
     public static final String NOT_FOUND_SCHOOL                 = "ENTITY_NAME: School, ENTITY_ID: ";
     public static final String DATA_PROVIDED                    = "DATA_PROVIDED: ";
+
+
+    public static final String GROUP_ERROR_TYPE = "ERROR_TYPE";
+    public static final String KEY_MSG_ERR201   = "MSG_ERR201";
+    public static final String KEY_MSG_ERR202   = "MSG_ERR202";
+    public static final String KEY_MSG_ERR401   = "MSG_ERR401";
+    public static final String KEY_MSG_ERR501   = "MSG_ERR501";
 }

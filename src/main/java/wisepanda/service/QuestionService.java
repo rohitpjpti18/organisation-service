@@ -17,6 +17,7 @@ public interface QuestionService {
     ServiceResponse addQuestion(QuestionDto data) throws WiseNoteException;
     ServiceResponse updateQuestion(QuestionDto data) throws WiseNoteException;
     ServiceResponse deleteQuestion(QuestionDto data, String deleteBy) throws WiseNoteException;
+    void validate(Question data) throws WiseNoteException;
 
     QuestionMultipleChoice addQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException;
     QuestionMultipleChoice getQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException;
@@ -24,6 +25,8 @@ public interface QuestionService {
     List<Long> getQuestionId(List<Long> topicTagIds) throws WiseNoteException;
     Question getQuestion(QuestionDto data) throws WiseNoteException;
 
-    TopicTag addTopicTag(TopicTagDto data) throws WiseNoteException;
+    List<TopicTag> addTopicTag(TopicTagDto data) throws WiseNoteException;
     ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException;
+
+
 }

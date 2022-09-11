@@ -14,7 +14,7 @@ import java.util.Objects;
 public class CountryCode {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_country_code_seq")
-    @SequenceGenerator(name = "s_country_code_seq")
+    @SequenceGenerator(name = "s_country_code_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "country_name")

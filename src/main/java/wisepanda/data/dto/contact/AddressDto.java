@@ -14,9 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDto implements Serializable {
-    @JsonIgnore
     private Long id;
-    @JsonIgnore
     private ContactDto contact;
     @JsonAlias({"address_type"})
     private AddressType addressType;
