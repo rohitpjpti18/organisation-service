@@ -39,4 +39,9 @@ public class ErrorConstants {
     public static final String KEY_MSG_ERR202   = "MSG_ERR202";
     public static final String KEY_MSG_ERR401   = "MSG_ERR401";
     public static final String KEY_MSG_ERR501   = "MSG_ERR501";
+
+
+    public static String emptyValueMsg(String value) {
+        return value + "cannot be empty/null.";
+    }
 }

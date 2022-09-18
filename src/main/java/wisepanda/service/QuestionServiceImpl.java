@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Retry.Topic;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import wisepanda.common.ConfigConstants;
 import wisepanda.common.Constants;
 import wisepanda.common.ErrorConstants;
 import wisepanda.data.dao.GeneralDao;
@@ -17,6 +18,7 @@ import wisepanda.data.dto.question.QuestionMultipleChoiceDto;
 import wisepanda.data.dto.question.QuestionTagsDto;
 import wisepanda.data.dto.question.TopicTagDto;
 import wisepanda.data.entities.Organisation;
+import wisepanda.data.entities.application.AppConfig;
 import wisepanda.data.entities.question.Question;
 import wisepanda.data.entities.question.QuestionMultipleChoice;
 import wisepanda.data.entities.question.QuestionTags;
@@ -27,6 +29,7 @@ import wisepanda.exceptions.WiseNoteException;
 import wisepanda.utils.InputValidator;
 import wisepanda.utils.StringUtil;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -175,50 +178,85 @@ public class QuestionServiceImpl implements QuestionService{
             t.setIsApproved(isApproved);
             result.add(generalDao.topicTag.saveAndFlush(t));
 
+            AppConfig a = new AppConfig();
+            a.setApplication(Constants.APP_NAME);
+            a.setCreatedOn(Instant.now());
+            a.setCreatedBy(Constants.APP_NAME);
+            a.setKeyGroup(ConfigConstants.GROUP_QUESTION_TAGS_TAGTOID);
+            a.setKey(t.getTagName());
+            a.setValue(t.getId().toString());
+            generalDao.appConfig.saveAndFlush(a);
+
+            AppConfig a2 = new AppConfig();
+            a2.setApplication(Constants.APP_NAME);
+            a2.setCreatedOn(Instant.now());
+            a2.setCreatedBy(Constants.APP_NAME);
+            a2.setKeyGroup(ConfigConstants.GROUP_QUESTION_TAGS_IDTOTAG);
+            a2.setKey(t.getId().toString());
+            a2.setValue(t.getTagName());
+            generalDao.appConfig.saveAndFlush(a2);
         }
         return result;
     }
 
     @Override
     public ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException {
-        data = validationService.validate(data);
+        validate(data);
 
         // Check if 
         //      1. question and topicTag with given id exists or not 
         //      2. questiontag with given topicTag and question is already present;
-        Optional<TopicTag> ot = generalDao.topicTag.findById(data.getTopicTag().getId());
-        Optional<Question> oq = generalDao.question.findById(data.getQuestion().getId());
-        Optional<QuestionTags> oqt = generalDao.questionTags.findByQuesAndTag(data.getQuestion().getId(), data.getTopicTag().getId());
-        log.info("Hello");
+        List<String> tags = StringUtil.splitStr(data.getTopicTag().getTagName());
+        Question oq = generalDao.question.findById(data.getQuestion().getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
 
-        if(!ot.isPresent()) {
-            WiseNoteException err = new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND, "Data doesnot exist for topic tag id: " + Long.toString(data.getTopicTag().getId()));
-            throw err;
-        }else if(!oq.isPresent()){
-            WiseNoteException err = new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND);
-            throw err;
-        }else if(oqt.isPresent()){
-            WiseNoteException err = new WiseNoteException(ErrorType.ERROR_DUPLICATE_DATA, "Question Tag Data with question id: " 
-            +  Long.toString(data.getQuestion().getId()) 
-            + " topic tag id: " 
-            + Long.toString(data.getTopicTag().getId()) 
-            + " already exists.");
-            throw err;
+        List<String> resultTags = new ArrayList<>();
+
+        for(String tag: tags) {
+            List<TopicTag> lot = generalDao.topicTag.findByTagName(tag);
+            TopicTag ot = lot.get(0);
+            if(ot != null && ot.getId() != null) {
+                Optional<QuestionTags> oqt = generalDao.questionTags.findByQuesAndTag(data.getQuestion().getId(), ot.getId());
+                //log.info("Hello");
+
+                if(oqt.isPresent()){
+                    WiseNoteException err = new WiseNoteException(ErrorType.ERROR_DUPLICATE_DATA, "Question Tag Data with question id: "
+                            +  Long.toString(data.getQuestion().getId())
+                            + " topic tag id: "
+                            + Long.toString(data.getTopicTag().getId())
+                            + " already exists.");
+                    throw err;
+                }
+
+                QuestionTags q = new QuestionTags();
+                q.setTopicTag(ot);
+                q.setQuestion(oq);
+                log.info(q);
+                q = generalDao.questionTags.saveAndFlush(q);
+                log.info(q);
+                resultTags.add(q.getTopicTag().getTagName());
+            }
         }
-        
 
-        QuestionTags q = new QuestionTags();
-        q.setTopicTag(ot.get());
-        q.setQuestion(oq.get());
-        log.info(q);
-        q = generalDao.questionTags.saveAndFlush(q);
-        log.info(q);
+
+
+
+
+
+        Map<String, Object> maps = new HashMap<>();
+
+        maps.put("question-id", oq.getId());
+        maps.put("question-name", oq.getQuestionName());
+        maps.put("tags", resultTags);
+
+
         ServiceResponse s = new ServiceResponse();
         s.setHttpStatus(HttpStatus.OK);
-        s.setResult(q);
+        s.setResult(maps);
 
         return s;
     }
+
+
 
     @Override
     public List<Long> getQuestionId(List<Long> topicTagIds) throws WiseNoteException {
@@ -232,5 +270,12 @@ public class QuestionServiceImpl implements QuestionService{
         if(StringUtil.isEmpty(data.getQuestionName())) {
             throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
         }
+    }
+
+    private void validate(QuestionTagsDto data) throws WiseNoteException {
+        if(data.getTopicTag() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("TOPIC_TAG"));
+        if(data.getQuestion() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("QUESTION"));
+        if(StringUtil.isEmpty(data.getTopicTag().getTagName())) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("TAG_NAME"));
+        if(data.getQuestion().getId() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("QUESTION_ID"));
     }
 }
