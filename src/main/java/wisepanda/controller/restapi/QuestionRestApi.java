@@ -2,17 +2,12 @@ package wisepanda.controller.restapi;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import wisepanda.common.ApiConstants;
 import wisepanda.data.dto.app.ServiceResponse;
@@ -66,6 +61,20 @@ public class QuestionRestApi {
     public ResponseEntity<ServiceResponse> addQuestionTag(@RequestBody QuestionTagsDto data) throws WiseNoteException {
         System.out.println(data);
         ServiceResponse s = questionService.addQuestionTags(data);
+        return new ResponseEntity<>(s, HttpStatus.OK);
+    }
+
+    @GetMapping(ApiConstants.REST_URL_QUESTION_TAG)
+    public ResponseEntity<ServiceResponse> getQuestionTag(@RequestParam Integer id) throws WiseNoteException {
+        QuestionTagsDto data = new QuestionTagsDto();
+        data.setQuestion(new QuestionDto());
+        data.getQuestion().setId(Long.valueOf(id));
+
+        Map<String, Object> r = questionService.getQuestionTags(data);
+        ServiceResponse s = new ServiceResponse();
+        s.setResult(r);
+        s.setHttpStatus(HttpStatus.OK);
+
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 }

@@ -2,6 +2,8 @@ package wisepanda.data.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import wisepanda.data.entities.question.Question;
 import wisepanda.data.entities.question.QuestionTags;
 
 import java.util.List;
@@ -13,4 +15,7 @@ public interface QuestionTagsRepository extends JpaRepository<QuestionTags, Long
 
     @Query(value="FROM QuestionTags qt WHERE qt.question.id = ?1 AND qt.topicTag.id = ?2")
     Optional<QuestionTags> findByQuesAndTag(Long questionId, Long topicTagId);
+
+    @Query(value="FROM QuestionTags qt WHERE qt.question = :question")
+    List<QuestionTags> findByQuestion(@Param(value="question") Question q);
 }

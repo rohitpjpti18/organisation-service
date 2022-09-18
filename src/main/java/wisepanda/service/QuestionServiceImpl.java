@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Retry.Topic;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -173,6 +172,12 @@ public class QuestionServiceImpl implements QuestionService{
         List<TopicTag> result = new ArrayList<>();
 
         for(String tag: tags){
+            List<TopicTag> tt = generalDao.topicTag.findByTagName(tag.toUpperCase());
+            log.info(tt);
+            if(tt != null && !tt.isEmpty()) {
+                continue;
+            }
+
             TopicTag t = new TopicTag();
             t.setTagName(tag.toUpperCase());
             t.setIsApproved(isApproved);
@@ -219,12 +224,7 @@ public class QuestionServiceImpl implements QuestionService{
                 //log.info("Hello");
 
                 if(oqt.isPresent()){
-                    WiseNoteException err = new WiseNoteException(ErrorType.ERROR_DUPLICATE_DATA, "Question Tag Data with question id: "
-                            +  Long.toString(data.getQuestion().getId())
-                            + " topic tag id: "
-                            + Long.toString(data.getTopicTag().getId())
-                            + " already exists.");
-                    throw err;
+                    continue;
                 }
 
                 QuestionTags q = new QuestionTags();
@@ -254,6 +254,26 @@ public class QuestionServiceImpl implements QuestionService{
         s.setResult(maps);
 
         return s;
+    }
+
+    @Override
+    public Map<String, Object> getQuestionTags(QuestionTagsDto data) throws WiseNoteException {
+        Question q = generalDao.question.findById(data.getQuestion().getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
+
+        List<QuestionTags> tags = generalDao.questionTags.findByQuestion(q);
+        List<String> tagNames = new ArrayList<>();
+
+        for(QuestionTags que: tags) {
+            tagNames.add(que.getTopicTag().getTagName());
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("question-id", q.getId());
+        result.put("question-name", q.getQuestionName());
+        result.put("tags", tagNames);
+
+        return result;
     }
 
 

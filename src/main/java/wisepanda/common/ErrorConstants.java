@@ -42,6 +42,8 @@ public class ErrorConstants {
 
 
     public static String emptyValueMsg(String value) {
-        return value + "cannot be empty/null.";
+        return "Field " + value + ": cannot be empty/null.";
     }
+
+    public static String duplicateValueMsg(String entity, String value) { return "Entity: " + entity + ", Value: " + value + " already exists."; }
 }

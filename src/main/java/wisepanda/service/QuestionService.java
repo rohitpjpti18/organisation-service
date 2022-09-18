@@ -11,6 +11,7 @@ import wisepanda.data.entities.question.TopicTag;
 import wisepanda.exceptions.WiseNoteException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface QuestionService {
     ServiceResponse bulkAddQuestion(List<QuestionDto> questionsDto) throws WiseNoteException;
@@ -21,6 +22,8 @@ public interface QuestionService {
 
     QuestionMultipleChoice addQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException;
     QuestionMultipleChoice getQuestionMultipleChoice(QuestionMultipleChoiceDto data) throws WiseNoteException;
+
+    Map<String, Object> getQuestionTags(QuestionTagsDto data) throws WiseNoteException;
 
     List<Long> getQuestionId(List<Long> topicTagIds) throws WiseNoteException;
     Question getQuestion(QuestionDto data) throws WiseNoteException;
