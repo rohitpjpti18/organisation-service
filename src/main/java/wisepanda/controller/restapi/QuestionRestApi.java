@@ -70,6 +70,7 @@ public class QuestionRestApi {
         data.setQuestion(new QuestionDto());
         data.getQuestion().setId(Long.valueOf(id));
 
+
         Map<String, Object> r = questionService.getQuestionTags(data);
         ServiceResponse s = new ServiceResponse();
         s.setResult(r);
