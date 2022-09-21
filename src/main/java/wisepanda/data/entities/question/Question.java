@@ -7,6 +7,7 @@ import wisepanda.data.entities.Organisation;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import wisepanda.enums.TagType;
 
 import java.util.Objects;
 

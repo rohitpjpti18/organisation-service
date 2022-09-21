@@ -32,4 +32,5 @@ public interface QuestionService {
     ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException;
 
 
+    List<Question> getAllQuestionByTags(List<String> baseTags, List<String> unitTags, List<String> subUnitTags) throws WiseNoteException;
 }

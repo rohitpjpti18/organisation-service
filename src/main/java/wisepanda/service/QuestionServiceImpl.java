@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class QuestionServiceImpl implements QuestionService{
+public class QuestionServiceImpl implements QuestionService {
     private static final Logger log = LogManager.getLogger(QuestionServiceImpl.class);
 
     @Autowired
@@ -201,6 +201,7 @@ public class QuestionServiceImpl implements QuestionService{
             a2.setValue(t.getTagName());
             generalDao.appConfig.saveAndFlush(a2);
         }
+
         return result;
     }
 
@@ -238,10 +239,6 @@ public class QuestionServiceImpl implements QuestionService{
         }
 
 
-
-
-
-
         Map<String, Object> maps = new HashMap<>();
 
         maps.put("question-id", oq.getId());
@@ -255,6 +252,25 @@ public class QuestionServiceImpl implements QuestionService{
 
         return s;
     }
+
+    @Override
+    public List<Question> getAllQuestionByTags(List<String> baseTags, List<String> unitTags, List<String> subUnitTags) throws WiseNoteException {
+        if(baseTags == null || baseTags.isEmpty()) {
+            throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
+        }
+        int count = baseTags.size();
+        count += unitTags == null ? (subUnitTags == null ? 0 : subUnitTags.size()) : 1;
+
+        List<String> input = new ArrayList<>();
+        input.addAll(baseTags);
+        input.addAll(unitTags);
+        input.addAll(subUnitTags);
+
+        List<Question> questions = generalDao.getQuestionByTopicTags(input, count);
+
+        return questions;
+    }
+
 
     @Override
     public Map<String, Object> getQuestionTags(QuestionTagsDto data) throws WiseNoteException {
@@ -285,12 +301,14 @@ public class QuestionServiceImpl implements QuestionService{
         return questions;
     }
 
+
     @Override
     public void validate(Question data) throws WiseNoteException {
         if(StringUtil.isEmpty(data.getQuestionName())) {
             throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID);
         }
     }
+
 
     private void validate(QuestionTagsDto data) throws WiseNoteException {
         if(data.getTopicTag() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("TOPIC_TAG"));

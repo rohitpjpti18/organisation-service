@@ -31,5 +31,6 @@ public class ApiConstants {
     // App Rest api endpoints
     public static final String REST_URL_APP_ROOT                = REST_URL_ROOT + "/app";
     public static final String REST_URL_REFRESH_CACHE           = "/refresh-cache";
+    public static final String REST_URL_QUESTIONS               = "/questions";
 
 }

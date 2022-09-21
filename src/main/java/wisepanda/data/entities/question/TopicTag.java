@@ -1,6 +1,7 @@
 package wisepanda.data.entities.question;
 
 import lombok.*;
+import wisepanda.enums.TagType;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -23,6 +24,10 @@ public class TopicTag {
 
     @Column(name="is_approved")
     private Boolean isApproved;
+
+    @Column(name="tag_type")
+    @Enumerated(EnumType.STRING)
+    private TagType tagType = TagType.BASE;
 
     @Override
     public boolean equals(Object o) {
