@@ -7,6 +7,7 @@ import wisepanda.data.dto.question.QuestionTagsDto;
 import wisepanda.data.dto.question.TopicTagDto;
 import wisepanda.data.entities.question.Question;
 import wisepanda.data.entities.question.QuestionMultipleChoice;
+import wisepanda.data.entities.question.QuestionTags;
 import wisepanda.data.entities.question.TopicTag;
 import wisepanda.exceptions.WiseNoteException;
 
@@ -29,7 +30,7 @@ public interface QuestionService {
     Question getQuestion(QuestionDto data) throws WiseNoteException;
 
     List<TopicTag> addTopicTag(TopicTagDto data) throws WiseNoteException;
-    ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException;
+    ServiceResponse addQuestionTags(QuestionTags data) throws WiseNoteException;
 
 
     List<Question> getAllQuestionByTags(List<String> baseTags, List<String> unitTags, List<String> subUnitTags) throws WiseNoteException;

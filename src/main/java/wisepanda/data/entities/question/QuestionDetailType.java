@@ -15,7 +15,7 @@ import java.util.Objects;
 public class QuestionDetailType {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_question_type_detail_type_seq")
-    @SequenceGenerator(name = "s_question_type_detail_type_seq")
+    @SequenceGenerator(name = "s_question_type_detail_type_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

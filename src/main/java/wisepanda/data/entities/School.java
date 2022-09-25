@@ -17,7 +17,7 @@ import java.util.Objects;
 public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_school_seq")
-    @SequenceGenerator(name = "s_school_seq")
+    @SequenceGenerator(name = "s_school_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

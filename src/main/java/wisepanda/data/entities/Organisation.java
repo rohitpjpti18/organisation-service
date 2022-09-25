@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_organisation_seq")
-    @SequenceGenerator(name = "s_organisation_seq")
+    @SequenceGenerator(name = "s_organisation_seq", allocationSize = 1)
     private Long id;
 
     @Column(name="name")

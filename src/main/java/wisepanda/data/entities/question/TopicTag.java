@@ -15,7 +15,7 @@ import java.util.Objects;
 public class TopicTag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_topic_tag_seq")
-    @SequenceGenerator(name = "s_topic_tag_seq")
+    @SequenceGenerator(name = "s_topic_tag_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

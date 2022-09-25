@@ -17,6 +17,7 @@ import wisepanda.data.dto.question.QuestionDto;
 import wisepanda.data.dto.question.QuestionTagsDto;
 import wisepanda.data.dto.question.TopicTagDto;
 import wisepanda.data.entities.question.Question;
+import wisepanda.data.entities.question.QuestionTags;
 import wisepanda.data.entities.question.TopicTag;
 import wisepanda.exceptions.WiseNoteException;
 import wisepanda.service.QuestionService;
@@ -62,7 +63,7 @@ public class QuestionRestApi {
     }
 
     @PostMapping(ApiConstants.REST_URL_QUESTION_TAG)
-    public ResponseEntity<ServiceResponse> addQuestionTag(@RequestBody QuestionTagsDto data) throws WiseNoteException {
+    public ResponseEntity<ServiceResponse> addQuestionTag(@RequestBody QuestionTags data) throws WiseNoteException {
         System.out.println(data);
         ServiceResponse s = questionService.addQuestionTags(data);
         return new ResponseEntity<>(s, HttpStatus.OK);

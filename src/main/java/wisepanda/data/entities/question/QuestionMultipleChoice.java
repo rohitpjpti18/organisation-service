@@ -15,7 +15,7 @@ import java.util.Objects;
 public class QuestionMultipleChoice {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_question_type_multiple_choice_seq")
-    @SequenceGenerator(name = "s_question_type_multiple_choice_seq")
+    @SequenceGenerator(name = "s_question_type_multiple_choice_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

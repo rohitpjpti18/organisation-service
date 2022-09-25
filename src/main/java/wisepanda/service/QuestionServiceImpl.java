@@ -206,14 +206,23 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public ServiceResponse addQuestionTags(QuestionTagsDto data) throws WiseNoteException {
+    public ServiceResponse addQuestionTags(QuestionTags data) throws WiseNoteException {
         validate(data);
 
         // Check if 
         //      1. question and topicTag with given id exists or not 
         //      2. questiontag with given topicTag and question is already present;
         List<String> tags = StringUtil.splitStr(data.getTopicTag().getTagName());
-        Question oq = generalDao.question.findById(data.getQuestion().getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
+        Question oq;
+        if(data.getId() != null) oq = generalDao.question.findById(data.getQuestion().getId()).orElseThrow(() -> new WiseNoteException(ErrorType.ERROR_ENTITY_NOT_FOUND));
+        else {
+            oq = new Question();
+            oq.setId(generalDao.question.getNextValue());
+            oq.setQuestionName(String.join("_", tags) + "_" + oq.getId());
+            oq.setDefaultWeightage(data.getQuestion().getDefaultWeightage() == null ? 1 : data.getQuestion().getDefaultWeightage());
+            oq.setNegativeMarking(data.getQuestion().getNegativeMarking() == null ? 0 : data.getQuestion().getNegativeMarking());
+            oq = generalDao.question.saveAndFlush(oq);
+        }
 
         List<String> resultTags = new ArrayList<>();
 
@@ -310,10 +319,10 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
-    private void validate(QuestionTagsDto data) throws WiseNoteException {
+    private void validate(QuestionTags data) throws WiseNoteException {
         if(data.getTopicTag() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("TOPIC_TAG"));
-        if(data.getQuestion() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("QUESTION"));
+        //if(data.getQuestion() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("QUESTION"));
         if(StringUtil.isEmpty(data.getTopicTag().getTagName())) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("TAG_NAME"));
-        if(data.getQuestion().getId() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("QUESTION_ID"));
+        //if(data.getQuestion().getId() == null) throw new WiseNoteException(ErrorType.ERROR_INPUT_INVALID, ErrorConstants.emptyValueMsg("QUESTION_ID"));
     }
 }

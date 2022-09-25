@@ -14,7 +14,7 @@ public class Constants {
 
     public static final String GROUP_APP_CONFIG                 = "sql.queries.application.app_config";
     public static final String KEY_APP_CONFIG_GET_COUNT         = "GET_COUNT";
-    public static final String GROUP_QUESTION_TAGS              = "wnCore.question.tags";
+    public static final String GROUP_QUESTION_TAGS              = "wn.question.tags";
     public static final String KEY_GETQUESTIONS_FOR_TAGS_SQL    = "GETQUESTIONS_FOR_TAGS_SQL";
 
 }

@@ -17,7 +17,7 @@ import java.util.Objects;
 public class QuestionTags {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_question_tags_seq")
-    @SequenceGenerator(name = "s_question_tags_seq")
+    @SequenceGenerator(name = "s_question_tags_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

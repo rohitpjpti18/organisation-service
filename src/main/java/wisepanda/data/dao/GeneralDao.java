@@ -2,7 +2,9 @@ package wisepanda.data.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,7 +19,9 @@ import wisepanda.common.Constants;
 import wisepanda.data.entities.application.AppConfig;
 import wisepanda.data.entities.question.Question;
 import wisepanda.data.repositories.*;
+import wisepanda.enums.TagType;
 import wisepanda.service.AppConfigService;
+import wisepanda.utils.StringUtil;
 
 
 @Component
@@ -86,19 +90,56 @@ public class GeneralDao {
 
         List<Object[]> result = q.getResultList();
         log.debug(result);
-        List<List<Object>> finalList = new ArrayList<>();
+        Map<Long, List<Object>> finalList = new HashMap<>();
         List<Long> ids = new ArrayList<>();
         for(Object[] row: result) {
             List<Object> rowVals = new ArrayList<>();
             rowVals.add((BigInteger)row[0]);
             rowVals.add((String) row[1]);
-            rowVals.add((BigInteger)row[2]);
+            rowVals.add((String)row[2]);
 
-            finalList.add(rowVals);
+            finalList.put(((BigInteger)rowVals.get(0)).longValue(), rowVals);
 
             ids.add(((BigInteger)row[0]).longValue());
         }
+
         List<Question> questions = question.findAllById(ids);
+        for(Question que: questions) {
+            List<String> returnTags = StringUtil.splitStr((String)finalList.get(que.getId()).get(2));
+            log.debug(returnTags);
+            Map<String, List<String>> tagMap = new HashMap<>();
+            for(String t: returnTags) {
+                List<String> tagAndType = StringUtil.splitStr(t, ":");
+                log.debug(TagType.valueOf(tagAndType.get(1)));
+                switch (TagType.valueOf(tagAndType.get(1))) {
+                    case BASE: {
+                        List<String> newVal = tagMap.getOrDefault("baseTags", new ArrayList<>());
+                        newVal.add(tagAndType.get(0));
+                        tagMap.put("baseTags", newVal);
+                        break;
+                    }
+                    case UNIT: {
+                        List<String> newVal = tagMap.getOrDefault("unitTags", new ArrayList<>());
+                        newVal.add(tagAndType.get(0));
+                        tagMap.put("unitTags", newVal);
+                        break;
+                    }
+                    case SUBTOPIC: {
+                        List<String> newVal = tagMap.getOrDefault("subUnitTags", new ArrayList<>());
+                        newVal.add(tagAndType.get(0));
+                        tagMap.put("subUnitTags", newVal);
+                        break;
+                    }
+                    default: {
+
+                        break;
+                    }
+                }
+            }
+            que.setBaseTags(tagMap.get("baseTags"));
+            que.setUnitTags(tagMap.get("unitTags"));
+            que.setSubUnitTags(tagMap.get("subUnitTags"));
+        }
         return questions;
     }
 }
